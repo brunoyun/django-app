@@ -2,6 +2,7 @@
 from datetime import datetime
 from django.template import loader
 from django.http import HttpResponse
+import json
 
 def index(request):
     template = loader.get_template("MyApp/index.html")
