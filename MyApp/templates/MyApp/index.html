@@ -23,7 +23,7 @@
 
     <div id="graph-container"></div>
 
-    
+
     <script>
         //var graphData = {{ graph_data|safe }};
         // Use D3.js to render the directed graph using graphData
@@ -65,7 +65,9 @@
             .selectAll("line")
             .data(graphData.links)
             .enter()
-            .append("line");
+            .append("line")
+            .style("stroke", "gray")  // Set the color of the links
+            .style("stroke-width", 2); // Set the width of the links;
 
         const node = svg.append("g")
             .selectAll("circle")
