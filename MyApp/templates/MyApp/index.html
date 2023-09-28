@@ -68,7 +68,7 @@
             .style("stroke-width", 2) // Set the width of the links;
             .attr("marker-end", "url(#arrow)");
 
-        const node = svg.append("g")
+        node = svg.append("g")
             .selectAll("circle")
             .data(graphData.nodes)
             .enter()
@@ -88,7 +88,7 @@
             .attr("dy", ".35em") // Adjust the vertical alignment as needed
             .text(d => d.name); // Assuming you have a "name" property in your node data
 
-        
+
         // Define the tick function to update node and link positions
         simulation.nodes(graphData.nodes)
             .on("tick", ticked);
