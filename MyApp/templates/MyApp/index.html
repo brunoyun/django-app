@@ -5,16 +5,17 @@
     <title>{% block title %}My amazing site{% endblock %}</title>
 </head>
 
+<link rel="stylesheet" type="text/css" href="{% static 'style/MyApp_index.css' %}">
 
 <body>
 
-<div>
+<div class="half-screen">
     <h1>The input area</h1>
     <textarea >Zone de texte!</textarea>
 
 </div>
 
-<div>
+<div class="half-screen">
     <h1>The display area</h1>
     Number of athletes: {{ athlete}}
 </div>
