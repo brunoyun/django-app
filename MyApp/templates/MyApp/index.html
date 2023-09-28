@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <title>My amazing App</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 
@@ -11,15 +12,111 @@
 
 <body>
 
-<div class="half-screen">
+<div>
     <h1>The input area</h1>
     <textarea >Zone de texte!</textarea>
 
 </div>
 
-<div class="half-screen">
+<div>
     <h1>The display area</h1>
-    Number of athletes: {{ athlete}}
+
+
+    <script>
+        var graphData = {{ graph_data|safe }};
+        // Use D3.js to render the directed graph using graphData
+        // Example D3.js code for rendering a directed graph goes here
+
+
+        
+        // Sample graph data (you can replace this with data from your Django view)
+        const graphData = {
+            nodes: [
+                { id: 1, name: "Node 1" },
+                { id: 2, name: "Node 2" },
+                { id: 3, name: "Node 3" },
+            ],
+            links: [
+                { source: 1, target: 2 },
+                { source: 2, target: 3 },
+            ],
+        };
+
+        // Define the dimensions of the graph container
+        const width = 800;
+        const height = 400;
+
+        // Create an SVG element to render the graph
+        const svg = d3.select("#graph-container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Create a D3 force simulation to layout the graph
+        const simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d => d.id))
+            .force("charge", d3.forceManyBody())
+            .force("center", d3.forceCenter(width / 2, height / 2));
+
+        // Add links and nodes to the simulation
+        const link = svg.append("g")
+            .selectAll("line")
+            .data(graphData.links)
+            .enter()
+            .append("line");
+
+        const node = svg.append("g")
+            .selectAll("circle")
+            .data(graphData.nodes)
+            .enter()
+            .append("circle")
+            .attr("r", 10)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        // Define the tick function to update node and link positions
+        simulation.nodes(graphData.nodes)
+            .on("tick", ticked);
+
+        simulation.force("link")
+            .links(graphData.links);
+
+        // Tick function to update node and link positions
+        function ticked() {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
+        }
+
+        // Functions for drag behavior
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+    </script>
+
+
+
 </div>
 
 
