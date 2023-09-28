@@ -72,15 +72,15 @@
             .selectAll("circle")
             .data(graphData.nodes)
             .enter()
+            .append("circle")
+            .attr("r", 10)
+            .style("opacity", 0.5);
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        // Append circles for nodes
-        node.append("circle")
-            .attr("r", 10)
-            .style("opacity", 0.5);
+        
 
         // Append text labels next to nodes
         node.append("text")
