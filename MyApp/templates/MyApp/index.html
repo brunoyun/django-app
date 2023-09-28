@@ -86,8 +86,6 @@
             .enter()
             .append("text")
             .text(d => d.name)
-            .attr("x", d => d.x + 15) // Adjust the position to the right of the node
-            .attr("y", d => d.y - 15) // Adjust the position above the node
             .style("font-size", "12px")
             .style("fill", "red");
 
