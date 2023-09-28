@@ -78,12 +78,13 @@
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
-                .on("end", dragended));
+                .on("end", dragended))
+            .append("text")
+                .attr("x", 15) // Adjust the x-coordinate to control the distance from the circle
+                .attr("dy", ".35em") // Adjust the vertical alignment as needed
+                .text(d => d.name);;
 
-        node.append("text")
-            .attr("x", 15) // Adjust the x-coordinate to control the distance from the circle
-            .attr("dy", ".35em") // Adjust the vertical alignment as needed
-            .text(d => d.name); // Assuming you have a "name" property in your node data
+
 
         // Define the tick function to update node and link positions
         simulation.nodes(graphData.nodes)
