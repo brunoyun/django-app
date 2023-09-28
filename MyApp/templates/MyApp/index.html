@@ -94,11 +94,11 @@
             .data(graphData.nodes)
             .enter()
             .append("text")
-            .text(d => d.name) // Set the text content to the node name
-            .attr("x", d => d.x + 30) // Adjust the position as needed
-            .attr("y", d => d.y)
-            .style("font-size", "12px") // Customize font size
-            .style("fill", "red"); // Customize text color
+            .text(d => d.name)
+            .attr("x", d => d.x + 15) // Adjust the position to the right of the node
+            .attr("y", d => d.y - 15) // Adjust the position above the node
+            .style("font-size", "12px")
+            .style("fill", "red");
 
         // Define the tick function to update node and link positions
         simulation.nodes(graphData.nodes)
