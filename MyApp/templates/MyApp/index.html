@@ -88,6 +88,10 @@
             .text(function(d) { return d.name; })
             .attr("class", "label")
 
+        label
+            .style("text-anchor", "middle")
+            .style("font-size", "10px");
+        
         // Define the tick function to update node and link positions
         simulation.nodes(graphData.nodes)
             .on("tick", ticked);
