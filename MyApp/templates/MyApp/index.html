@@ -53,10 +53,19 @@
             .attr("height", height);
 
         // Create a D3 force simulation to layout the graph
-        const simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(width / 2, height / 2));
+        var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+            .force('charge', d3.forceManyBody()
+                .strength(-1900)
+                .theta(0.5)
+                .distanceMax(1500)
+            )
+            .force('collision', d3.forceCollide().radius(function(d) {
+                return d.radius
+            }))
+            .force("center", d3.forceCenter(document.querySelector("#graph-container").clientWidth / 2, document.querySelector("#graph-container").clientHeight / 2));
+
+
 
         // Add links and nodes to the simulation
         const link = svg.append("g")
