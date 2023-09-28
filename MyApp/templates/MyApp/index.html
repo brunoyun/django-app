@@ -68,26 +68,22 @@
             .style("stroke-width", 2) // Set the width of the links;
             .attr("marker-end", "url(#arrow)");
 
-        node = svg.append("g")
+        const node = svg.append("g")
             .selectAll("circle")
             .data(graphData.nodes)
             .enter()
             .append("circle")
             .attr("r", 10)
-            .style("opacity", 0.5);
+            .style("opacity", 0.5)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        
-
-        // Append text labels next to nodes
         node.append("text")
             .attr("x", 15) // Adjust the x-coordinate to control the distance from the circle
             .attr("dy", ".35em") // Adjust the vertical alignment as needed
             .text(d => d.name); // Assuming you have a "name" property in your node data
-
 
         // Define the tick function to update node and link positions
         simulation.nodes(graphData.nodes)
