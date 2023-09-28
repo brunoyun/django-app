@@ -74,6 +74,7 @@
             .enter()
             .append("circle")
             .attr("r", 10)
+            .style("opacity", 0.5)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
