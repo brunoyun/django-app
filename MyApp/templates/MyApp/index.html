@@ -26,7 +26,7 @@
 
     //To style the arrows
     <svg height="0" width="0">
-        <marker id="arrow" markerWidth="5" markerHeight="5" refX="8" refY="5" orient="auto">
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
             <path d="M0,0 L0,10 L10,5 z" fill="black" />
         </marker>
     </svg>
@@ -88,6 +88,17 @@
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+
+        const text = svg.append("g")
+            .selectAll("text")
+            .data(graphData.nodes)
+            .enter()
+            .append("text")
+            .text(d => d.name) // Set the text content to the node name
+            .attr("x", d => d.x + 15) // Adjust the position as needed
+            .attr("y", d => d.y)
+            .style("font-size", "12px") // Customize font size
+            .style("fill", "black"); // Customize text color
 
         // Define the tick function to update node and link positions
         simulation.nodes(graphData.nodes)
