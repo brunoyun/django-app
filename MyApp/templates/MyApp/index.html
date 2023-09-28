@@ -33,24 +33,14 @@
 
 
     <script>
-        //var graphData = {{ graph_data|safe }};
+        //var graphData =
         // Use D3.js to render the directed graph using graphData
         // Example D3.js code for rendering a directed graph goes here
 
 
 
         // Sample graph data (you can replace this with data from your Django view)
-        const graphData = {
-            nodes: [
-                { id: 1, name: "Node 1" },
-                { id: 2, name: "Node 2" },
-                { id: 3, name: "Node 3" },
-            ],
-            links: [
-                { source: 1, target: 2 },
-                { source: 2, target: 3 },
-            ],
-        };
+        const graphData = {{ graph_data|safe }};
 
         // Define the dimensions of the graph container
         const width = 800;
