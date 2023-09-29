@@ -12,13 +12,13 @@
 
 <body>
 
-<div>
+<div style="width: 30%;">
     <h1>The input area</h1>
     <textarea >Zone de texte!</textarea>
 
 </div>
 
-<div>
+<div style="width: 70%;">
     <h1>The display area</h1>
 
     <div id="graph-container"></div>
@@ -93,7 +93,7 @@
             .selectAll("line")
             .data(graphData.links)
             .enter()
-            .join('line')
+            .append('line')
             .attr('x1', d => d.source.x)
             .attr('x2', d => d.target.x)
             .attr('y1', d => d.source.y)
@@ -101,7 +101,7 @@
             .style("stroke", "black")  // Set the color of the links
             .style("stroke-width", 2) // Set the width of the links;
             .attr("marker-end", "url(#arrow)");
-        
+
         const node = svg.append("g")
             .selectAll("circle")
             .data(graphData.nodes)
