@@ -43,8 +43,9 @@
         const graphData = {{ graph_data|safe }};
 
         // Define the dimensions of the graph container
-        const width = 800;
-        const height = 400;
+        const width = 960;
+        const height = 600;
+
 
         // Create an SVG element to render the graph
         const svg = d3.select("#graph-container")
@@ -65,7 +66,17 @@
             }))
             .force("center", d3.forceCenter(document.querySelector("#graph-container").clientWidth / 2, document.querySelector("#graph-container").clientHeight / 2));
 
-
+        var defs = svg.append("defs");
+        defs.append("radialGradient")
+            .attr("id", "source-gradient")
+            .selectAll("stop")
+            .data([
+                {offset: "20%", color: "#eda515"},
+                {offset: "100%", color: "#827777"},
+            ])
+            .enter().append("stop")
+            .attr("offset", function(d) { return d.offset; })
+            .attr("stop-color", function(d) { return d.color; });
 
         // Add links and nodes to the simulation
         const link = svg.append("g")
@@ -95,7 +106,7 @@
             .data(graphData.nodes)
             .enter().append("text")
             .text(function(d) { return d.name; })
-            .attr("class", "label")
+            .attr("class", "label");
 
         label
             .style("text-anchor", "middle")
