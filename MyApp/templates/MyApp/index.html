@@ -79,15 +79,29 @@
             .attr("stop-color", function(d) { return d.color; });
 
         // Add links and nodes to the simulation
+        // const link = svg.append("g")
+        //     .selectAll("line")
+        //     .data(graphData.links)
+        //     .enter()
+        //     .append("line")
+        //     .style("stroke", "black")  // Set the color of the links
+        //     .style("stroke-width", 2) // Set the width of the links;
+        //     .attr("marker-end", "url(#arrow)");
+
+
         const link = svg.append("g")
             .selectAll("line")
             .data(graphData.links)
             .enter()
-            .append("line")
+            .join('line')
+            .attr('x1', d => d.source.x)
+            .attr('x2', d => d.target.x)
+            .attr('y1', d => d.source.y)
+            .attr('y2', d => d.target.y)
             .style("stroke", "black")  // Set the color of the links
             .style("stroke-width", 2) // Set the width of the links;
             .attr("marker-end", "url(#arrow)");
-
+        
         const node = svg.append("g")
             .selectAll("circle")
             .data(graphData.nodes)
