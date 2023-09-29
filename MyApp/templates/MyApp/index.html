@@ -94,6 +94,7 @@
             .enter()
             .append("circle")
             .attr("r", 35)
+            .style("fill", "url(#source-gradient)" )
             .style("opacity", 0.5)
             .call(d3.drag()
                 .on("start", dragstarted)
