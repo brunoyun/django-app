@@ -212,7 +212,7 @@
                 url: '{% url "compute" %}',
                 data: $(this).serialize(),
                 success: function (data) {
-                    $('#outputDiv').text(data.result);
+                    $('#outputDiv').text(data.console);
                 }
             });
         });

@@ -32,7 +32,31 @@ def index(request):
 def compute(request):
     if request.method == 'POST':
         text = request.POST.get('input_text', '')  # Get the text from the POST data
-        # Perform any processing on the text if needed
-        response_data = {'result': text}
+        console_text = "Computation started.\n"
+        text = text.replace("\n", "")
+        text = text.replace(" ", "")
+        text_split = text.split(".")
+
+        arguments = {}
+        console_text += "Parsing started.\n"
+        #Parsing of the arguments
+        for t in text_split:
+            if t[:4] == "arg(":
+                arguments.append(t[4:-1])
+
+        console_text += str(len(arguments)) + "arguments found.\n"
+
+        attacks = {}
+        for t in text_split:
+            if t[:4] == "att(":
+                att_split = t[4:-1].split(",")
+                if (att_split[0] in arguments) and (att_split[1] in arguments):
+                    attacks.append((att_split[0],att_split[1]))
+                else:
+                     console_text += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
+
+        console_text += str(len(attacks)) + "arguments found.\n"
+
+        response_data = {'console': console_text}
         return JsonResponse(response_data)  # Return the result as JSON
     return render(request, "MyApp/index.html")
