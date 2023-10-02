@@ -41,7 +41,6 @@ def compute(request):
         console_text += "Parsing started.\n"
         #Parsing of the arguments
         for t in text_split:
-            console_text += "DEBUG: " + t
             if t[:4] == "arg(":
                 arguments.add(t[4:-1])
 
@@ -51,9 +50,13 @@ def compute(request):
 
         attacks = set()
         for t in text_split:
+            console_text += "DEBUG: " + t +"\n"
             if t[:4] == "att(":
+                console_text += "FOUND att"+"\n"
                 att_split = t[4:-1].split(",")
+                console_text += att_split[0]+" "+att_split[1]+"\n"
                 if (att_split[0] in arguments) and (att_split[1] in arguments):
+                    console_text += "BOTH args found\n"
                     attacks.add((att_split[0],att_split[1]))
                 else:
                      console_text += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
