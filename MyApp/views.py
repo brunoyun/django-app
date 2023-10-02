@@ -50,7 +50,7 @@ def compute(request):
 
         attacks = set()
         for t in text_split:
-            console_text += "DEBUG: " + t +"\n"
+            console_text += "DEBUG: " + t +" "+ t[:4]+"\n"
             if t[:4] == "att(":
                 console_text += "FOUND att"+"\n"
                 att_split = t[4:-1].split(",")
