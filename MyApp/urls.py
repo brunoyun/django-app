@@ -6,5 +6,5 @@ from MyApp.views import index
 
 urlpatterns = [
     path('', index),
-    path('compute/', views.compute, name='compute'),
+    path('compute/', compute, name='compute'),
 ]
