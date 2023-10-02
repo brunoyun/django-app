@@ -226,9 +226,10 @@
             .text(function (d) { return d.name; });
 
         // Restart the simulation
-        simulation.nodes(newData.nodes);
+        simulation.nodes(newData.nodes).on("tick", ticked);
         simulation.force("link").links(newData.links);
         simulation.alpha(1).restart();
+
     }
 
 

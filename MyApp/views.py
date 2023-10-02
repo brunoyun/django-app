@@ -12,8 +12,8 @@ def index(request):
 
     graph_data = {
             "nodes": [
-                {"id": 1, "name": "Node 1"},
-                {"id": 2, "name": "Node 2"},
+                {"id": 1, "name": "a1"},
+                {"id": 2, "name": "a2"},
                 # Add more nodes as needed
             ],
             "links": [
