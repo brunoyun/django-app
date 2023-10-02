@@ -195,39 +195,11 @@
     function updateGraph(newData) {
         // Your D3.js code to update the graph with new data
 
-        node.data(newData.nodes)
-            .enter()
-            .append("circle")
-            .merge(node)
-            .attr("r", 35)
-            .style("fill", "url(#source-gradient)")
-            .style("opacity", 0.5)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+        //We remove the previous elements
+        svg.selectAll("line").remove()
+        svg.selectAll("circle").remove()
+        svg.selectAll("text").remove()
 
-        link.data(newData.links)
-            .enter()
-            .append('line')
-            .merge(link)
-            .attr('x1', d => d.source.x)
-            .attr('x2', d => d.target.x)
-            .attr('y1', d => d.source.y)
-            .attr('y2', d => d.target.y)
-            .style("stroke", "black")
-            .style("stroke-width", 2)
-            .attr("marker-end", "url(#arrow)");
-
-        label.data(newData.nodes)
-            .enter()
-            .append("text")
-            .merge(label)
-            .text(function (d) { return d.name; });
-
-        // Restart the simulation
-        simulation.nodes(newData.nodes).on("tick", ticked);
-        simulation.force("link").links(newData.links);
 
     }
 
@@ -243,7 +215,7 @@
                 url: '{% url "compute" %}',
                 data: $(this).serialize(),
                 success: function (data) {
-                    $('#outputDiv').text(data.console+data.graph_data);
+                    $('#outputDiv').text(data.console);
                     updateGraph(data.graph_data);
                 }
             });

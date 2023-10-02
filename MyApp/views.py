@@ -58,7 +58,7 @@ def compute(request):
 
         console_text += str(len(attacks)) + " attacks found:\n"
         for (a,b) in attacks:
-            console_text+= a + " attacks "+ b
+            console_text+= a + " attacks "+ b+"\n"
 
 
 
