@@ -146,7 +146,7 @@
 
     label
         .style("text-anchor", "middle")
-        .style("font-size", "10px");
+        .style("font-size", "20px");
 
     // Define the tick function to update node and link positions
     simulation.nodes(graphData.nodes)
@@ -228,7 +228,6 @@
         // Restart the simulation
         simulation.nodes(newData.nodes).on("tick", ticked);
         simulation.force("link").links(newData.links);
-        simulation.alpha(1).restart();
 
     }
 
@@ -244,7 +243,7 @@
                 url: '{% url "compute" %}',
                 data: $(this).serialize(),
                 success: function (data) {
-                    $('#outputDiv').text(data.console);
+                    $('#outputDiv').text(data.console+data.graph_data);
                     updateGraph(data.graph_data);
                 }
             });
