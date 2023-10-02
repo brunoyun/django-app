@@ -23,7 +23,6 @@ def index(request):
     }
 
     context = {
-            "athlete": 3,
             'graph_data': json.dumps(graph_data),
     }
 
@@ -50,13 +49,9 @@ def compute(request):
 
         attacks = set()
         for t in text_split:
-            console_text += "DEBUG: " + t +" "+ t[:4]+"\n"
             if t[:4] == "att(":
-                console_text += "FOUND att"+"\n"
                 att_split = t[4:-1].split(",")
-                console_text += att_split[0]+" "+att_split[1]+"\n"
                 if (att_split[0] in arguments) and (att_split[1] in arguments):
-                    console_text += "BOTH args found\n"
                     attacks.add((att_split[0],att_split[1]))
                 else:
                      console_text += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
@@ -65,6 +60,16 @@ def compute(request):
         for (a,b) in attacks:
             console_text+= a + " attacks "+ b
 
-        response_data = {'console': console_text}
+
+
+        arg_dict = { a: i for (i,a) in enumerate(arguments)}
+
+        gdata_input = {
+            "nodes": [{"id": arg_dict[a], "name": a} for a in arguments],
+            "links": [{"source": arg_dict[a], "target": arg_dict[b]} for (a,b) in attacks],
+        }
+
+        response_data = {'console': console_text,
+                         'graph_data': gdata_input}
         return JsonResponse(response_data)  # Return the result as JSON
     return render(request, "MyApp/index.html")

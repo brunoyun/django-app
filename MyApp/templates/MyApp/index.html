@@ -110,17 +110,6 @@
         .attr("offset", function(d) { return d.offset; })
         .attr("stop-color", function(d) { return d.color; });
 
-    // Add links and nodes to the simulation
-    // const link = svg.append("g")
-    //     .selectAll("line")
-    //     .data(graphData.links)
-    //     .enter()
-    //     .append("line")
-    //     .style("stroke", "black")  // Set the color of the links
-    //     .style("stroke-width", 2) // Set the width of the links;
-    //     .attr("marker-end", "url(#arrow)");
-
-
     const link = svg.append("g")
         .selectAll("line")
         .data(graphData.links)
@@ -200,6 +189,49 @@
         d.fx = null;
         d.fy = null;
     }
+
+
+
+    function updateGraph(newData) {
+        // Your D3.js code to update the graph with new data
+
+        node.data(newGraphData.nodes)
+            .enter()
+            .append("circle")
+            .merge(node)
+            .attr("r", 35)
+            .style("fill", "url(#source-gradient)")
+            .style("opacity", 0.5)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        link.data(newGraphData.links)
+            .enter()
+            .append('line')
+            .merge(link)
+            .attr('x1', d => d.source.x)
+            .attr('x2', d => d.target.x)
+            .attr('y1', d => d.source.y)
+            .attr('y2', d => d.target.y)
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .attr("marker-end", "url(#arrow)");
+
+        label.data(newGraphData.nodes)
+            .enter()
+            .append("text")
+            .merge(label)
+            .text(function (d) { return d.name; });
+
+        // Restart the simulation
+        simulation.nodes(newGraphData.nodes);
+        simulation.force("link").links(newGraphData.links);
+        simulation.alpha(1).restart();
+    }
+
+
 </script>
 
 <script>
@@ -212,6 +244,7 @@
                 data: $(this).serialize(),
                 success: function (data) {
                     $('#outputDiv').text(data.console);
+                    updateGraph(data.graph_data);
                 }
             });
         });
