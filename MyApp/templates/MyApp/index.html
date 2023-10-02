@@ -142,9 +142,7 @@
         .data(graphData.nodes)
         .enter().append("text")
         .text(function(d) { return d.name; })
-        .attr("class", "label");
-
-    label
+        .attr("class", "label")
         .style("text-anchor", "middle")
         .style("font-size", "20px");
 
@@ -201,6 +199,48 @@
         svg.selectAll("text").remove()
 
 
+        node = svg.append("g")
+            .selectAll("circle")
+            .data(newData.nodes);
+        node.enter()
+            .append("circle")
+            .attr("r", 35)
+            .style("fill", "url(#source-gradient)" )
+            .style("opacity", 0.5)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        link = svg.append("g")
+            .selectAll("line");
+        links.data(newData.links)
+            .enter()
+            .append('line')
+            .attr('x1', d => d.source.x)
+            .attr('x2', d => d.target.x)
+            .attr('y1', d => d.source.y)
+            .attr('y2', d => d.target.y)
+            .style("stroke", "black")  // Set the color of the links
+            .style("stroke-width", 2) // Set the width of the links;
+            .attr("marker-end", "url(#arrow)");
+
+
+        label = svg.append("g")
+            .attr("class", "labels")
+            .selectAll("text")
+            .data(newData.nodes);
+
+        label.enter().append("text")
+            .text(function(d) { return d.name; })
+            .attr("class", "label")
+            .style("text-anchor", "middle")
+            .style("font-size", "20px");
+
+
+        // Restart the simulation
+        simulation.nodes(newData.nodes).on("tick", ticked);
+        simulation.force("link").links(newData.links);
     }
 
 
