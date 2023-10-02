@@ -214,7 +214,7 @@
 
         link = svg.append("g")
             .selectAll("line");
-        links.data(newData.links)
+        link.data(newData.links)
             .enter()
             .append('line')
             .attr('x1', d => d.source.x)
