@@ -37,21 +37,21 @@ def compute(request):
         text = text.replace(" ", "")
         text_split = text.split(".")
 
-        arguments = {}
+        arguments = set()
         console_text += "Parsing started.\n"
         #Parsing of the arguments
         for t in text_split:
             if t[:4] == "arg(":
-                arguments.append(t[4:-1])
+                arguments.add(t[4:-1])
 
         console_text += str(len(arguments)) + "arguments found.\n"
 
-        attacks = {}
+        attacks = set()
         for t in text_split:
             if t[:4] == "att(":
                 att_split = t[4:-1].split(",")
                 if (att_split[0] in arguments) and (att_split[1] in arguments):
-                    attacks.append((att_split[0],att_split[1]))
+                    attacks.add((att_split[0],att_split[1]))
                 else:
                      console_text += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
 
