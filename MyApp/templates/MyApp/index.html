@@ -195,7 +195,7 @@
     function updateGraph(newData) {
         // Your D3.js code to update the graph with new data
 
-        node.data(newGraphData.nodes)
+        node.data(newData.nodes)
             .enter()
             .append("circle")
             .merge(node)
@@ -207,7 +207,7 @@
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        link.data(newGraphData.links)
+        link.data(newData.links)
             .enter()
             .append('line')
             .merge(link)
@@ -219,7 +219,7 @@
             .style("stroke-width", 2)
             .attr("marker-end", "url(#arrow)");
 
-        label.data(newGraphData.nodes)
+        label.data(newData.nodes)
             .enter()
             .append("text")
             .merge(label)
