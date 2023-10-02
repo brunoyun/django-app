@@ -57,6 +57,6 @@ def compute(request):
 
         console_text += str(len(attacks)) + "arguments found.\n"
 
-        response_data = {'console': console_text}
+        response_data = {'console': text}
         return JsonResponse(response_data)  # Return the result as JSON
     return render(request, "MyApp/index.html")
