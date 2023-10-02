@@ -33,7 +33,7 @@ def compute(request):
     if request.method == 'POST':
         text = request.POST.get('input_text', '')  # Get the text from the POST data
         console_text = "Computation started.\n"
-        text = text.replace("\n", "")
+        text = text.replace('\n', '').replace('\r', '')
         text = text.replace(" ", "")
         text_split = text.split(".")
 
