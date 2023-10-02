@@ -226,8 +226,8 @@
             .text(function (d) { return d.name; });
 
         // Restart the simulation
-        simulation.nodes(newGraphData.nodes);
-        simulation.force("link").links(newGraphData.links);
+        simulation.nodes(newData.nodes);
+        simulation.force("link").links(newData.links);
         simulation.alpha(1).restart();
     }
 
