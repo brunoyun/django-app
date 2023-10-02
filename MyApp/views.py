@@ -2,6 +2,8 @@
 from datetime import datetime
 from django.template import loader
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import render
 import json
 
 def index(request):
@@ -27,3 +29,10 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
+def compute(request):
+    if request.method == 'POST':
+        text = request.POST.get('input_text', '')  # Get the text from the POST data
+        # Perform any processing on the text if needed
+        response_data = {'result': text}
+        return JsonResponse(response_data)  # Return the result as JSON
+    return render(request, "MyApp/index.html")
