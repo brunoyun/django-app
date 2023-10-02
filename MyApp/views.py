@@ -44,7 +44,9 @@ def compute(request):
             if t[:4] == "arg(":
                 arguments.add(t[4:-1])
 
-        console_text += str(len(arguments)) + "arguments found.\n"
+        console_text += str(len(arguments)) + "arguments found:\n"
+        for arg in arguments:
+            console_text += arg+"\n"
 
         attacks = set()
         for t in text_split:
@@ -55,8 +57,10 @@ def compute(request):
                 else:
                      console_text += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
 
-        console_text += str(len(attacks)) + "arguments found.\n"
+        console_text += str(len(attacks)) + "arguments found:\n"
+        for (a,b) in attacks:
+            console_text+= a + " attacks "+ b
 
-        response_data = {'console': text}
+        response_data = {'console': console_text}
         return JsonResponse(response_data)  # Return the result as JSON
     return render(request, "MyApp/index.html")
