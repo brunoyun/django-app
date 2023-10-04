@@ -259,15 +259,15 @@
     $(document).ready(function () {
         $('form').on('submit', function (event) {
             event.preventDefault();
-            $.ajax({
-                type: 'POST',
-                url: '{% url "compute" %}',
-                data: $(this).serialize(),
-                success: function (data) {
-                    $('#outputDiv').text(data.console);
-                    updateGraph(data.graph_data);
-                }
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '{% url "compute" %}',
+            //     data: $(this).serialize(),
+            //     success: function (data) {
+            //         $('#outputDiv').text(data.console);
+            //         updateGraph(data.graph_data);
+            //     }
+            // });
 
             $.ajax({
                 type: 'POST',
