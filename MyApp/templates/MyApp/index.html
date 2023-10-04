@@ -304,8 +304,13 @@
 
                     // Render the graph
                     const graphContainer = document.getElementById('graph-container');
-                    const svgString = Viz(jsonGraph.dot, { format: jsonGraph.format });
-                    graphContainer.innerHTML = svgString;
+                    import { instance } from "@viz-js/viz";
+                    instance().then(function(viz) {
+                        // DOT string
+                        graphContainer.appendChild(viz.renderSVGElement(jsonGraph.dot));
+
+                    //const svgString = Viz(jsonGraph.dot, { format: jsonGraph.format });
+                    //graphContainer.innerHTML = svgString;
 
 
                 }
