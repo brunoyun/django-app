@@ -37,6 +37,9 @@ def index(request):
 def compute(request):
     if request.method == 'POST':
         text = request.POST.get('input_text', '')  # Get the text from the POST data
+        selected_semantics = request.POST.get("semantics")
+
+
         console_text = "Computation started.\n"
         text = text.replace('\n', '').replace('\r', '')
         text = text.replace(" ", "")
@@ -51,7 +54,7 @@ def compute(request):
 
         console_text += str(len(arguments)) + " arguments found:\n"
         for arg in arguments:
-            console_text += arg+"\n"
+            console_text += "- "+arg+"\n"
 
         attacks = set()
         for t in text_split:
@@ -64,7 +67,7 @@ def compute(request):
 
         console_text += str(len(attacks)) + " attacks found:\n"
         for (a,b) in attacks:
-            console_text+= a + " attacks "+ b+"\n"
+            console_text+= "- "+a + " attacks "+ b+"\n"
 
 
         index_dict = { i: a for (i,a) in enumerate(arguments)}
@@ -79,7 +82,7 @@ def compute(request):
         G = nx.DiGraph()
         G.add_nodes_from(range(len(arguments)))
         G.add_edges_from([(arg_dict[a],arg_dict[b]) for (a,b) in attacks])
-        set_degrees(G)
+        set_degrees(G,sem=selected_semantics)
 
         information_arg = [{"arg": index_dict[i],
                        "degree": G.nodes[i]["degree"]} for i in range(len(arguments))]
