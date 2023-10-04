@@ -67,7 +67,7 @@ def compute(request):
             console_text+= a + " attacks "+ b+"\n"
 
 
-
+        index_dict = { i: a for (i,a) in enumerate(arguments)}
         arg_dict = { a: i for (i,a) in enumerate(arguments)}
 
         #We create the graph to send to the view
@@ -81,11 +81,13 @@ def compute(request):
         G.add_edges_from([(arg_dict[a],arg_dict[b]) for (a,b) in attacks])
         set_degrees(G)
 
-        for i in G.nodes():
-            console_text+= str(G.nodes[i]["degree"])
+        information_arg = [{"arg": index_dict[i],
+                       "degree": G.nodes[i]["degree"]} for i in range(len(arguments))]
+
 
         response_data = {'console': console_text,
-                         'graph_data': gdata_input}
+                         'graph_data': gdata_input,
+                         'information_arg': information_arg}
         return JsonResponse(response_data)  # Return the result as JSON
     return render(request, "MyApp/index.html")
 

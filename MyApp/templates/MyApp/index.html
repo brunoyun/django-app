@@ -50,6 +50,21 @@
 
 
         <div style="margin-left: 45%;  width: 50%;padding: 20px;border: 2px solid black;">
+            <h1>Graph information</h1>
+            <table id="degree_table">
+                <tr>
+                    <th>Arguments</th>
+                    <th>a1</th>
+                    <th>a2</th>
+                </tr>
+                <tr>
+                    <td>Degree</td>
+                    <td>1</td>
+                    <td>0.5</td>
+                </tr>
+
+            </table>
+
             <h1>The display area</h1>
 
             <div id="graph-container"></div>
@@ -238,6 +253,7 @@
 </script>
 
 <script>
+    //To update the console when clicking and building the dable
     $(document).ready(function () {
         $('form').on('submit', function (event) {
             event.preventDefault();
@@ -250,8 +266,41 @@
                     updateGraph(data.graph_data);
                 }
             });
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "compute" %}',
+                data: $(this).serialize(),
+                success: function (data) {
+
+                    var table = document.getElementById("degree_table");
+                    var arg_graph = data.information_arg;
+
+                    // Clear existing columns except the first one
+                    for (var j=0; j<2; j++){
+                        var headerRow = table.rows[j];
+                        for (var i = headerRow.cells.length - 1; i > 0; i--) {
+                            headerRow.deleteCell(i);
+                        }
+                    }
+
+                    // Add rows from JSON data
+                    for (var i = 0; i < arg_graph.length; i++) {
+                        var cell1 = table.rows[0].insertCell(table.rows[0].cells.length);
+                        var cell2 = table.rows[1].insertCell(table.rows[1].cells.length);
+                        cell1.innerHTML = arg_graph[i].arg;
+                        cell2.innerHTML = arg_graph[i].degree;
+                    }
+
+                }
+            });
+
         });
     });
+
+
+
+
 </script>
 
 
