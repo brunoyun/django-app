@@ -92,7 +92,6 @@ def compute(request):
 
         gdata_input = convert_to_dot(G)
 
-        console_text+= gdata_input
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
                          'information_arg': information_arg}
