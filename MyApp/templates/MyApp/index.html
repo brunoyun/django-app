@@ -6,7 +6,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
-    <script src="https://unpkg.com/@hpcc-js/wasm/dist/graphviz.umd.js" type="application/javascript/"></script>
+    <script src="https://cpettitt.github.io/project/graphlib-dot/v0.4.10/graphlib-dot.min.js"></script>
+    <script src="https://cpettitt.github.io/project/dagre-d3/v0.1.5/dagre-d3.min.js"></script>
 </head>
 
 <svg height="0" width="0">
@@ -74,7 +75,11 @@
 
             <h1>The display area</h1>
 
-            <div id="graph-container"></div>
+            <div>
+                <svg id="graph-container">
+                    <g/>
+                </svg>
+            </div>
 
 
         </div>
@@ -299,11 +304,15 @@
                     }
 
 
+                    var renderer = new dagreD3.Renderer();
+                    renderer.run(data.graph_data, d3.select("svg g"));
 
 
-                    d3.select("#graph-container")
-                        .graphviz()
-                        .renderDot(data.gdata_input)
+                    // Optional - resize the SVG element based on the contents.
+                    var svg = document.querySelector('#graph-container');
+                    var bbox = svg.getBBox();
+                    svg.style.width = bbox.width + 40.0 + "px";
+                    svg.style.height = bbox.height + 40.0 + "px";
 
                 }
             });
