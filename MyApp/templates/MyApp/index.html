@@ -297,21 +297,12 @@
                         cell2.style.border = "1px solid";
                     }
 
-                    const jsonGraph = {
-                        dot: data.gdata_input,
-                        format: 'svg' // or 'png', 'dot', 'pdf', etc.
-                    };
 
-                    // Render the graph
-                    const graphContainer = document.getElementById('graph-container');
-                    import { instance } from "@viz-js/viz";
-                    instance().then(function(viz) {
-                        // DOT string
-                        graphContainer.appendChild(viz.renderSVGElement(jsonGraph.dot));
 
-                    //const svgString = Viz(jsonGraph.dot, { format: jsonGraph.format });
-                    //graphContainer.innerHTML = svgString;
 
+                    d3.select("#graph-container")
+                        .graphviz(useWorker)
+                        .renderDot(data.gdata_input)
 
                 }
             });
