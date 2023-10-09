@@ -167,6 +167,7 @@
 
                     // Render the graphlib object using d3.
                     var render = new dagreD3.render();
+                    d3.select("svg g").selectAll("*").remove();
                     render(d3.select("svg g"), g);
 
 
