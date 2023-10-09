@@ -117,175 +117,6 @@
 </body>
 
 
-<!--<script>-->
-
-
-
-<!--    // Sample graph data (you can replace this with data from your Django view)-->
-<!--    const graphData = {{ graph_data|safe }};-->
-
-<!--    // Define the dimensions of the graph container-->
-<!--    const width = "100%";-->
-<!--    const height = "500px";-->
-
-
-<!--    // Create an SVG element to render the graph-->
-<!--    const svg = d3.select("#graph-container")-->
-<!--        .append("svg")-->
-<!--        .attr("width", width)-->
-<!--        .attr("height", height);-->
-
-<!--    // Create a D3 force simulation to layout the graph-->
-<!--    var simulation = d3.forceSimulation()-->
-<!--        .force("link", d3.forceLink().id(function(d) { return d.id; }))-->
-<!--        .force('charge', d3.forceManyBody()-->
-<!--            .strength(-1900)-->
-<!--            .theta(0.5)-->
-<!--            .distanceMax(1500)-->
-<!--        )-->
-<!--        .force('collision', d3.forceCollide().radius(function(d) {-->
-<!--            return d.radius-->
-<!--        }))-->
-<!--        .force("center", d3.forceCenter(document.querySelector("#graph-container").clientWidth / 2, document.querySelector("#graph-container").clientHeight / 2));-->
-
-<!--    var defs = svg.append("defs");-->
-<!--    defs.append("radialGradient")-->
-<!--        .attr("id", "source-gradient")-->
-<!--        .selectAll("stop")-->
-<!--        .data([-->
-<!--            {offset: "20%", color: "#eda515"},-->
-<!--            {offset: "100%", color: "#827777"},-->
-<!--        ])-->
-<!--        .enter().append("stop")-->
-<!--        .attr("offset", function(d) { return d.offset; })-->
-<!--        .attr("stop-color", function(d) { return d.color; });-->
-
-<!--    const link = svg.append("g")-->
-<!--        .selectAll("line")-->
-<!--        .data(graphData.links)-->
-<!--        .enter()-->
-<!--        .append('line')-->
-<!--        .attr('x1', d => d.source.x)-->
-<!--        .attr('x2', d => d.target.x)-->
-<!--        .attr('y1', d => d.source.y)-->
-<!--        .attr('y2', d => d.target.y)-->
-<!--        .style("stroke", "black")  // Set the color of the links-->
-<!--        .style("stroke-width", 2) // Set the width of the links;-->
-<!--        .attr("marker-end", "url(#arrow)");-->
-
-<!--    const node = svg.append("g")-->
-<!--        .selectAll("circle")-->
-<!--        .data(graphData.nodes)-->
-<!--        .enter()-->
-<!--        .append("circle")-->
-<!--        .attr("r", 35)-->
-<!--        .style("fill", "url(#source-gradient)" )-->
-<!--        .style("opacity", 0.5)-->
-<!--        .call(d3.drag()-->
-<!--            .on("start", dragstarted)-->
-<!--            .on("drag", dragged)-->
-<!--            .on("end", dragended));-->
-
-<!--    var label = svg.append("g")-->
-<!--        .attr("class", "labels")-->
-<!--        .selectAll("text")-->
-<!--        .data(graphData.nodes)-->
-<!--        .enter().append("text")-->
-<!--        .text(function(d) { return d.name; })-->
-<!--        .attr("class", "label")-->
-<!--        .style("text-anchor", "middle")-->
-<!--        .style("font-size", "20px");-->
-
-<!--    // Define the tick function to update node and link positions-->
-<!--    simulation.nodes(graphData.nodes)-->
-<!--        .on("tick", ticked);-->
-
-<!--    simulation.force("link")-->
-<!--        .links(graphData.links);-->
-
-<!--    // Tick function to update node and link positions-->
-<!--    function ticked() {-->
-<!--        link-->
-<!--            .attr("x1", d => d.source.x)-->
-<!--            .attr("y1", d => d.source.y)-->
-<!--            .attr("x2", d => d.target.x)-->
-<!--            .attr("y2", d => d.target.y);-->
-
-<!--        node-->
-<!--            .attr("cx", d => d.x)-->
-<!--            .attr("cy", d => d.y);-->
-
-<!--        label-->
-<!--            .attr("x", function(d) { return d.x; })-->
-<!--            .attr("y", function (d) { return d.y; });-->
-<!--    }-->
-
-<!--    // Functions for drag behavior-->
-<!--    function dragstarted(event, d) {-->
-<!--        if (!event.active) simulation.alphaTarget(0.3).restart();-->
-<!--        d.fx = d.x;-->
-<!--        d.fy = d.y;-->
-<!--    }-->
-
-<!--    function dragged(event, d) {-->
-<!--        d.fx = event.x;-->
-<!--        d.fy = event.y;-->
-<!--    }-->
-
-<!--    function dragended(event, d) {-->
-<!--        if (!event.active) simulation.alphaTarget(0);-->
-<!--        d.fx = null;-->
-<!--        d.fy = null;-->
-<!--    }-->
-
-
-
-<!--    function updateGraph(newData) {-->
-<!--        // Your D3.js code to update the graph with new data-->
-
-<!--        //We remove the previous elements-->
-<!--        /*svg.selectAll("line").remove()-->
-<!--        svg.selectAll("circle").remove()-->
-<!--        svg.selectAll("text").remove()*/-->
-
-<!--        node.data(newData.nodes)-->
-<!--            .enter()-->
-<!--            .append("circle")-->
-<!--            .merge(node)-->
-<!--            .attr("r", 35)-->
-<!--            .style("fill", "url(#source-gradient)")-->
-<!--            .style("opacity", 0.5)-->
-<!--            .call(d3.drag()-->
-<!--                .on("start", dragstarted)-->
-<!--                .on("drag", dragged)-->
-<!--                .on("end", dragended));-->
-
-<!--        link.data(newData.links)-->
-<!--            .enter()-->
-<!--            .append('line')-->
-<!--            .merge(link)-->
-<!--            .attr('x1', d => d.source.x)-->
-<!--            .attr('x2', d => d.target.x)-->
-<!--            .attr('y1', d => d.source.y)-->
-<!--            .attr('y2', d => d.target.y)-->
-<!--            .style("stroke", "black")-->
-<!--            .style("stroke-width", 2)-->
-<!--            .attr("marker-end", "url(#arrow)");-->
-
-<!--        label.data(newData.nodes)-->
-<!--            .enter()-->
-<!--            .append("text")-->
-<!--            .merge(label)-->
-<!--            .text(function (d) { return d.name; });-->
-
-<!--        // Restart the simulation-->
-<!--        simulation.nodes(newData.nodes);-->
-<!--        simulation.force("link").links(newData.links);-->
-<!--        simulation.alpha(1).restart();-->
-<!--    }-->
-
-
-<!--</script>-->
 
 <script>
     //To update the console when clicking and building the dable
@@ -330,6 +161,21 @@
                         cell2.style.border = "1px solid";
                     }
 
+
+                    //Update graph
+                    var g = graphlibDot.read(data.graph_data)
+
+                    // Render the graphlib object using d3.
+                    var render = new dagreD3.render();
+                    render(d3.select("svg g"), g);
+
+
+                    // Optional - resize the SVG element based on the contents.
+                    var svg = document.querySelector('#graphContainer');
+                    var bbox = svg.getBBox();
+                    svg.style.width = bbox.width + 40.0 + "px";
+                    svg.style.height = bbox.height + 40.0 + "px";
+
                 }
             });
 
@@ -348,7 +194,7 @@
         // Parse the DOT syntax into a graphlib object.
         var g = graphlibDot.read(
             'digraph {\n' +
-            '    a -> b;\n' +
+            '    a1 -> a2;\n' +
             '    }'
         )
 
