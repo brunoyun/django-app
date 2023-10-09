@@ -189,28 +189,4 @@
 </script>
 
 
-<script type="module">
-
-    window.onload = function() {
-        // Parse the DOT syntax into a graphlib object.
-        var g = graphlibDot.read(
-            'digraph {\n' +
-            '    a1 -> a2;\n' +
-            '    }'
-        )
-
-        // Render the graphlib object using d3.
-        var render = new dagreD3.render();
-        render(d3.select("svg g"), g);
-
-
-        // Optional - resize the SVG element based on the contents.
-        var svg = document.querySelector('#graphContainer');
-        var bbox = svg.getBBox();
-        svg.style.width = bbox.width + 40.0 + "px";
-        svg.style.height = bbox.height + 40.0 + "px";
-    }
-
-</script>
-
 </html>
