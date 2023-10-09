@@ -92,7 +92,6 @@ def compute(request):
 
         gdata_input = convert_to_dot(G,index_dict)
 
-        console_text+=gdata_input
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
                          'information_arg': information_arg}
@@ -169,14 +168,13 @@ def set_Shapley_measure(G, sem):
             list_intensity.append(1-G.nodes[e[1]]["degree"])
         else:
             #If there are multiple attacks, we need to consider subsets of attacks
-            #print("attackers",attackers)
+
             Y = [ y for y in attackers if y != e[0]]
             total = 0
             for X in (list(powerset(Y))):
                 sizeX = len(X)
                 X_edges = [(x, e[1]) for x in X]
 
-                #print("X",X_edges)
 
                 A1 = copy_graph_without_X(G,X_edges)
                 set_degrees(A1, sem)
@@ -186,8 +184,7 @@ def set_Shapley_measure(G, sem):
                 X_edges.append((e[0],e[1]))
                 A2 = copy_graph_without_X(G,X_edges)
                 set_degrees(A2, sem)
-                #print("A2",A2.nodes(data=True), A2.edges())
-                #print(A2.nodes[e[1]]["degree"])
+
                 deg_A2 = A2.nodes[e[1]]["degree"]
 
                 total += math.factorial(sizeX) * math.factorial(n-sizeX-1) / math.factorial(n) * (deg_A2-deg_A1)
@@ -196,7 +193,7 @@ def set_Shapley_measure(G, sem):
     nx.set_edge_attributes(G, {list_edges[i] : list_intensity[i] for i in range(len(list_edges))}, name="attack_intensity")
 
 def convert_to_dot(G,index_dict):
-    if(not nx.is_empty(G)):
+    if(not (len(G.nodes)==0)):
         result= "digraph G {"
         for a in G.nodes:
             print(a)
