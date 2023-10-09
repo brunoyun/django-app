@@ -198,7 +198,8 @@ def convert_to_dot(G,index_dict):
     if(not nx.is_empty(G)):
         result= "digraph G {"
         for a in G.nodes:
-            result+= str(a)+" [label="+index_dict(a)+" "+str(round(G.nodes[a]["degree"],3))+"];"
+            print(a)
+            result+= str(a)+" [label=\""+str(index_dict[a])+" "+str(round(G.nodes[a]["degree"],3))+"\"];"
         for (i,j) in G.edges:
             result+= str(i)+" -> "+str(j)+" [label="+str(round(G[i][j]["attack_intensity"],3))+"];"
         return result+"}"
