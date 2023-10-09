@@ -90,7 +90,7 @@ def compute(request):
         information_arg = [{"arg": index_dict[i],
                        "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
-        gdata_input = convert_to_dot(G)
+        gdata_input = convert_to_dot(G,index_dict)
 
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
@@ -194,11 +194,11 @@ def set_Shapley_measure(G, sem):
 
     nx.set_edge_attributes(G, {list_edges[i] : list_intensity[i] for i in range(len(list_edges))}, name="attack_intensity")
 
-def convert_to_dot(G):
+def convert_to_dot(G,index_dict):
     if(not nx.is_empty(G)):
         result= "digraph G {"
         for a in G.nodes:
-            result+= str(a)+" [xlabel="+str(round(G.nodes[a]["degree"],3))+"];"
+            result+= str(a)+" [label="+index_dict(a)+" "+str(round(G.nodes[a]["degree"],3))+"];"
         for (i,j) in G.edges:
             result+= str(i)+" -> "+str(j)+" [label="+str(round(G[i][j]["attack_intensity"],3))+"];"
         return result+"}"
