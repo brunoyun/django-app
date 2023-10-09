@@ -88,7 +88,7 @@ def compute(request):
         set_Shapley_measure(G,sem=selected_semantics)
 
         information_arg = [{"arg": index_dict[i],
-                       "degree": G.nodes[i]["degree"]} for i in range(len(arguments))]
+                       "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
         gdata_input = convert_to_dot(G)
 

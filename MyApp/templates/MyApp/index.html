@@ -5,6 +5,8 @@
     <title>My amazing App</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://dagrejs.github.io/project/graphlib-dot/latest/graphlib-dot.min.js"></script>
+    <script src="https://dagrejs.github.io/project/dagre/latest/dagre.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
 </head>
 
@@ -74,7 +76,9 @@
             <h1>The display area</h1>
 
             <div id="container">
-                <svg></svg>
+                <svg id="graphContainer">
+                    <g/>
+                </svg>
             </div>
 
 
@@ -313,43 +317,25 @@
 
 <script type="module">
 
-    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+    window.onload = function() {
+        // Parse the DOT syntax into a graphlib object.
+        var g = graphlibDot.read(
+            'digraph {\n' +
+            '    a -> b;\n' +
+            '    }'
+        )
 
-    // Declare the chart dimensions and margins.
-    const width = 640;
-    const height = 400;
-    const marginTop = 20;
-    const marginRight = 20;
-    const marginBottom = 30;
-    const marginLeft = 40;
+        // Render the graphlib object using d3.
+        var render = new dagreD3.render();
+        render(d3.select("svg g"), g);
 
-    // Declare the x (horizontal position) scale.
-    const x = d3.scaleUtc()
-        .domain([new Date("2023-01-01"), new Date("2024-01-01")])
-        .range([marginLeft, width - marginRight]);
 
-    // Declare the y (vertical position) scale.
-    const y = d3.scaleLinear()
-        .domain([0, 100])
-        .range([height - marginBottom, marginTop]);
-
-    // Create the SVG container.
-    const svg = d3.create("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    // Add the x-axis.
-    svg.append("g")
-        .attr("transform", `translate(0,${height - marginBottom})`)
-        .call(d3.axisBottom(x));
-
-    // Add the y-axis.
-    svg.append("g")
-        .attr("transform", `translate(${marginLeft},0)`)
-        .call(d3.axisLeft(y));
-
-    // Append the SVG element.
-    container.append(svg.node());
+        // Optional - resize the SVG element based on the contents.
+        var svg = document.querySelector('#graphContainer');
+        var bbox = svg.getBBox();
+        svg.style.width = bbox.width + 40.0 + "px";
+        svg.style.height = bbox.height + 40.0 + "px";
+    }
 
 </script>
 
