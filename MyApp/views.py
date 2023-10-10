@@ -73,11 +73,7 @@ def compute(request):
         index_dict = { i: a for (i,a) in enumerate(arguments)}
         arg_dict = { a: i for (i,a) in enumerate(arguments)}
 
-        #We create the graph to send to the view
-        # gdata_input = {
-        #     "nodes": [{"id": arg_dict[a], "name": a} for a in arguments],
-        #     "links": [{"source": arg_dict[a], "target": arg_dict[b]} for (a,b) in attacks],
-        # }
+
 
 
         console_text += "Computing semantics using the semantics: "+selected_semantics+". \n"
@@ -90,9 +86,8 @@ def compute(request):
         information_arg = [{"arg": index_dict[i],
                        "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
-        gdata_input = ""
-            #convert_to_dot(G,index_dict)
-        #console_text+=convert_to_dot(G,index_dict)
+        gdata_input =convert_to_dot(G,index_dict)
+
 
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
@@ -193,6 +188,9 @@ def set_Shapley_measure(G, sem):
             list_intensity.append(total)
 
     nx.set_edge_attributes(G, {list_edges[i] : list_intensity[i] for i in range(len(list_edges))}, name="attack_intensity")
+
+def powerset(s):
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
 def convert_to_dot(G,index_dict):
     if(not (len(G.nodes)==0)):
