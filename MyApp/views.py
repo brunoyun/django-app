@@ -90,7 +90,8 @@ def compute(request):
         information_arg = [{"arg": index_dict[i],
                        "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
-        #gdata_input = convert_to_dot(G,index_dict)
+        gdata_input = ""
+            #convert_to_dot(G,index_dict)
         #console_text+=convert_to_dot(G,index_dict)
 
         response_data = {'console': console_text,
