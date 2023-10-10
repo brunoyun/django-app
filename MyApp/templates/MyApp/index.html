@@ -67,8 +67,6 @@
                 </div>
 
                 <div id="impact_div">
-                    <div id="X_set_impact"></div>
-                    <div id="x_impact"></div>
                 </div>
 
                 <button type="submit">Compute</button>
@@ -178,14 +176,20 @@
                     svg.style.height = bbox.height + 40.0 + "px";
 
                     //populating the impact form.
-                    var divImpactX = document.getElementById("X_set_impact");
-                    var divImpactx = document.getElementById("x_impact");
                     var impactcontainer = document.getElementById("impact_div");
 
                     if(arg_graph.length > 0){
-                        impactcontainer.insertAdjacentHTML("afterbegin", "Impact of X on x");
-                        divImpactX.textContent = "Arguments in X";
-                        divImpactx.textContent = "Arg x";
+                        impactcontainer.textContent = "<h2>Impact of X on x</h2>";
+
+                        var divImpactX = document.createElement("div");
+                        divImpactX.id = "X_set_impact";
+                        var divImpactx = document.createElement("div");
+                        divImpactx.id = "x_impact";
+
+                        impactcontainer.appendChild(divImpactX);
+                        impactcontainer.appendChild(divImpactx);
+                        divImpactX.textContent = "Arguments in X: ";
+                        divImpactx.textContent = "Arg x: ";
 
                         for (var i=0; i< arg_graph.length; i++){
 
@@ -213,11 +217,7 @@
                     }
                     else{
                         //If there are no arguments, we remove the access to impact
-                        impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = "";
-
-                        //while (divImpactX.firstChild) { divImpactX.removeChild(divImpactX.firstChild);}
-
-                        //while (divImpactx.firstChild) {divImpactx.removeChild(divImpactx.firstChild);}
+                        impactcontainer.textContent = "";
                     }
 
 
