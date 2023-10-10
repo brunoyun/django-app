@@ -67,7 +67,7 @@
                 </div>
 
                 <div id="impact_div">
-                    <div id="X_impact"></div>
+                    <div id="X_set_impact"></div>
                     <div id="x_impact"></div>
                 </div>
 
@@ -178,7 +178,7 @@
                     svg.style.height = bbox.height + 40.0 + "px";
 
                     //populating the impact form.
-                    var divImpactX = document.getElementById("X_impact");
+                    var divImpactX = document.getElementById("X_set_impact");
                     var divImpactx = document.getElementById("x_impact");
                     var impactcontainer = document.getElementById("impact_div");
 
@@ -187,10 +187,40 @@
                         divImpactX.textContent = "Arguments in X";
                         divImpactx.textContent = "Arg x";
 
+                        for (var i=0; i< arg_graph.length; i++){
+
+                            var inputArg_X = document.createElement("input");
+                            var inputArg_x = document.createElement("input");
+                            inputArg_X.type = "checkbox";
+                            inputArg_x.type = "radio";
+
+                            inputArg_X.name = "X_set";
+                            inputArg_x.name = "x_arg";
+
+                            inputArg_X.id = inputArg_X.value = inputArg_x.id = inputArg_x.value = arg_graph[i].arg;
+
+                            var labelX = document.createElement("label");
+                            var labelx = document.createElement("label");
+                            labelX.htmlFor = labelX.textContent= inputArg_X.id;
+                            labelx.htmlFor = labelx.textContent = inputArg_x.id;
+
+                            divImpactX.appendChild(labelX);
+                            divImpactX.appendChild(inputArg_X);
+
+                            divImpactx.appendChild(labelx);
+                            divImpactx.appendChild(inputArg_x);
+                        }
                     }
                     else{
                         impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = "";
 
+                        while (divImpactX.firstChild) {
+                            divImpactX.removeChild(divImpactX.firstChild);
+                        }
+
+                        while (divImpactx.firstChild) {
+                            divImpactx.removeChild(divImpactx.firstChild);
+                        }
                     }
 
 
