@@ -179,7 +179,7 @@
 
                     if(arg_graph.length > 0){
                         if (impactcontainer.textContent==""){
-                            createImpactSelection(impactcontainer);
+                            createImpactSelection(impactcontainer,arg_graph);
                         }
                     }
                     else{
@@ -195,7 +195,7 @@
     });
 
 
-    function createImpactSelection(impactcontainer){
+    function createImpactSelection(impactcontainer,arg_graph){
         //We erase and redraw
         impactcontainer.textContent="";
         var titleImpact = document.createElement("h2");
