@@ -183,7 +183,7 @@
                     var impactcontainer = document.getElementById("impact_div");
 
                     if(arg_graph.length > 0){
-                        impactcontainer.textContent = "Impact of X on x";
+                        impactcontainer.insertAdjacentHTML("afterbegin", "Impact of X on x");
                         divImpactX.textContent = "Arguments in X";
                         divImpactx.textContent = "Arg x";
 
@@ -212,15 +212,12 @@
                         }
                     }
                     else{
+                        //If there are no arguments, we remove the access to impact
                         impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = "";
 
-                        while (divImpactX.firstChild) {
-                            divImpactX.removeChild(divImpactX.firstChild);
-                        }
+                        //while (divImpactX.firstChild) { divImpactX.removeChild(divImpactX.firstChild);}
 
-                        while (divImpactx.firstChild) {
-                            divImpactx.removeChild(divImpactx.firstChild);
-                        }
+                        //while (divImpactx.firstChild) {divImpactx.removeChild(divImpactx.firstChild);}
                     }
 
 
