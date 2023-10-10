@@ -163,19 +163,19 @@
 
 
                     //Update graph
-                    var g = graphlibDot.read(data.graph_data)
-
-                    // Render the graphlib object using d3.
-                    var render = new dagreD3.render();
-                    d3.select("svg g").selectAll("*").remove();
-                    render(d3.select("svg g"), g);
-
-
-                    // Optional - resize the SVG element based on the contents.
-                    var svg = document.querySelector('#graphContainer');
-                    var bbox = svg.getBBox();
-                    svg.style.width = bbox.width + 40.0 + "px";
-                    svg.style.height = bbox.height + 40.0 + "px";
+                    // var g = graphlibDot.read(data.graph_data)
+                    //
+                    // // Render the graphlib object using d3.
+                    // var render = new dagreD3.render();
+                    // d3.select("svg g").selectAll("*").remove();
+                    // render(d3.select("svg g"), g);
+                    //
+                    //
+                    // // Optional - resize the SVG element based on the contents.
+                    // var svg = document.querySelector('#graphContainer');
+                    // var bbox = svg.getBBox();
+                    // svg.style.width = bbox.width + 40.0 + "px";
+                    // svg.style.height = bbox.height + 40.0 + "px";
 
                 }
             });

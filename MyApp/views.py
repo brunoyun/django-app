@@ -91,7 +91,7 @@ def compute(request):
                        "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
         gdata_input = convert_to_dot(G,index_dict)
-
+        console_text+=convert_to_dot(G,index_dict)
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
                          'information_arg': information_arg}
@@ -194,10 +194,10 @@ def set_Shapley_measure(G, sem):
 
 def convert_to_dot(G,index_dict):
     if(not (len(G.nodes)==0)):
-        result= "'digraph G {"
+        result= "digraph G {"
         for a in G.nodes:
             print(a)
             result+= str(a)+" [label=\""+str(index_dict[a])+" "+str(round(G.nodes[a]["degree"],3))+"\"];"
         for (i,j) in G.edges:
             result+= str(i)+" -> "+str(j)+" [label="+str(round(G[i][j]["attack_intensity"],3))+"];"
-        return result+"}'"
+        return result+"}"
