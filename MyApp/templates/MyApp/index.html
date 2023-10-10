@@ -66,8 +66,6 @@
                     <label for="card">Card-based semantics</label>
                 </div>
 
-                <div id="impact_div"></div>
-
                 <button type="submit">Compute</button>
             </form>
 
@@ -105,7 +103,9 @@
                 <form method="post" action="{% url 'compute_impact' %}">
                     {% csrf_token %}
 
-                    <button type="submit">Submit Second Form</button>
+                    <div id="impact_div"></div>
+
+                    <button type="submit" style="display: none;" id="button_impact">Compute Immpact</button>
                 </form>
 
             </div>
@@ -181,15 +181,21 @@
 
                     //populating the impact form.
                     var impactcontainer = document.getElementById("impact_div");
+                    var button_impact = document.getElementById("button_impact");
 
                     if(arg_graph.length > 0){
+
+                        button_impact.style.display= "block";
+
                         if (impactcontainer.textContent==""){
                             createImpactSelection(impactcontainer,arg_graph);
                         }
+
                     }
                     else{
                         //If there are no arguments, we remove the access to impact
                         impactcontainer.textContent = "";
+                        button_impact.style.display= "none";
                     }
 
 
