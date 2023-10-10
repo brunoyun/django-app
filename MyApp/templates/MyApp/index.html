@@ -102,6 +102,11 @@
                     <g/>
                 </svg>
 
+                <form method="post" action="{% url 'compute_impact' %}">
+                    {% csrf_token %}
+
+                    <button type="submit">Submit Second Form</button>
+                </form>
 
             </div>
 
@@ -209,8 +214,8 @@
 
         impactcontainer.appendChild(divImpactX);
         impactcontainer.appendChild(divImpactx);
-        divImpactX.textContent = "Arguments in X: ";
-        divImpactx.textContent = "Arg x: ";
+        divImpactX.textContent = "X: ";
+        divImpactx.textContent = "x: ";
 
         for (var i=0; i< arg_graph.length; i++){
 

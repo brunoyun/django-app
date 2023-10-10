@@ -35,6 +35,8 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def compute_impact(request):
+    if request.method == "POST":
+        return JsonResponse({'answer': ""})
     return render(request, "MyApp/index.html")
 
 def compute_graph(request):
