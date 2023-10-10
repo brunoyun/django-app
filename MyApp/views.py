@@ -90,7 +90,9 @@ def compute(request):
         information_arg = [{"arg": index_dict[i],
                        "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
-        gdata_input = convert_to_dot(G,index_dict)
+        gdata_input = 'digraph G {0 [label="a3 1.0"];1 [label="a2 0.366"];2 [label="a1 0.732"];0 -> 1 [label=0.376];1 -> 2 [label=0.268];2 -> 1 [label=0.258];}'
+
+        #convert_to_dot(G,index_dict))
 
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
