@@ -100,13 +100,13 @@
                     <g/>
                 </svg>
 
-                <div>
+                <div id="impact_div">
                     <form action="{% url 'compute_impact' %}" method="post">
                         {% csrf_token %}
 
                         <div id="X_impact"></div>
                         <div id="x_impact"></div>
-                        <button type="submit"></button>
+                        <!-- <button type="submit"></button> This will be added by javascript-->
                     </form>
 
                 </div>
@@ -180,6 +180,22 @@
                     var bbox = svg.getBBox();
                     svg.style.width = bbox.width + 40.0 + "px";
                     svg.style.height = bbox.height + 40.0 + "px";
+
+                    //populating the impact form.
+                    var divImpactX = document.getElementById("X_impact");
+                    var divImpactx = document.getElementById("x_impact");
+                    var impactcontainer = document.getElementById("impact_div");
+
+                    if(arg_graph.length > 0){
+                        impactcontainer.textContent = "Impact of X on x"
+                        divImpactX.textContent = "Arguments in X"
+                        divImpactx.textContent = "Arg x"
+                    }
+                    else{
+                        impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = ""
+
+                    }
+
 
                 }
             });
