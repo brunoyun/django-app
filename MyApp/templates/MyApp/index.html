@@ -37,13 +37,6 @@
 
 </head>
 
-<svg height="0" width="0">
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-        <path d="M0,0 L0,10 L10,5 z" fill="black" />
-    </marker>
-</svg>
-
-
 <body>
 
 
@@ -57,7 +50,7 @@
 
 
 
-            <form action="{% url 'compute' %}" method="post">
+            <form action="{% url 'compute_graph' %}" method="post">
                 {% csrf_token %}
                 <textarea name="input_text" style="width: 90%; height: 200px; overflow-y: scroll;">arg(a1).arg(a2).att(a1,a2).</textarea>
 
@@ -102,10 +95,21 @@
 
             <h1>The display area</h1>
 
-            <div id="container">
+            <div>
                 <svg id="graphContainer">
                     <g/>
                 </svg>
+
+                <div>
+                    <form action="{% url 'compute_impact' %}" method="post">
+                        {% csrf_token %}
+
+                        <div id="X_impact"></div>
+                        <div id="x_impact"></div>
+                        <button type="submit"></button>
+                    </form>
+
+                </div>
             </div>
 
 
@@ -125,7 +129,7 @@
             event.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: '{% url "compute" %}',
+                url: '{% url "compute_graph" %}',
                 data: $(this).serialize(),
                 success: function (data) {
                     $('#outputDiv').text(data.console);
@@ -135,7 +139,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '{% url "compute" %}',
+                url: '{% url "compute_graph" %}',
                 data: $(this).serialize(),
                 success: function (data) {
 

@@ -34,7 +34,7 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
-def compute(request):
+def compute_graph(request):
     if request.method == 'POST':
         text = request.POST.get('input_text', '')  # Get the text from the POST data
         selected_semantics = request.POST.get("semantics")
