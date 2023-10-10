@@ -130,7 +130,7 @@
                 url: '{% url "compute_graph" %}',
                 data: $(this).serialize(),
                 success: function (data) {
-                    $('#outputDiv').text(data.console);
+                    $('#outputDiv').append("<p>"+data.console+"</p>");
                     // updateGraph(data.graph_data);
                 }
             });
@@ -214,27 +214,79 @@
                 url: '{% url "compute_impact" %}',
                 data: $(this).serialize(),
                 success: function (data) {
-                    $('#outputDiv').text(data.console);
+                    //$('#outputDiv').append("<p>"+data.console+"</p>");
+                    $('#outputDiv').append("<p>Impact computation started</p>");
                 }
             });
         });
     });
 
     function updateImpactSelection(impactcontainer,arg_graph){
-        const setOfArguments = new Set();
-        for (var i = 0; i < arg_graph.length; i++) {
-            setOfArguments.add(arg_graph[i].arg);
-        }
 
+
+        //We get the set of displayed arguments
         const displayedArguments = new Set();
         var X_div = document.getElementById("X_set_impact");
-
         for (var i = 0; i < X_div.children.length; i++) {
             const id = X_div.children[i].id;
-            displayedArguments.add(id); // Store the id in the array
+            if (id != ""){
+                displayedArguments.add(id); // Store the id in the array
+            }
         }
         console.log(displayedArguments);
+
+        const setOfArguments = new Set();
+        var divImpactX = document.getElementById("X_set_impact");
+        var divImpactx = document.getElementById("x_impact");
+        for (var i = 0; i < arg_graph.length; i++) {
+            current_arg = arg_graph[i].arg
+            setOfArguments.add(current_arg);
+
+            if(!displayedArguments.has(current_arg)){ //If there is an argument that is not displayed, we need to add it
+
+                var inputArg_X = document.createElement("input");
+                var inputArg_x = document.createElement("input");
+                inputArg_X.type = "checkbox";
+                inputArg_x.type = "radio";
+
+                inputArg_X.name = "X_set";
+                inputArg_x.name = "x_arg";
+
+                inputArg_X.id = inputArg_X.value = inputArg_x.id = inputArg_x.value = current_arg;
+
+                var labelX = document.createElement("label");
+                var labelx = document.createElement("label");
+                labelX.htmlFor = labelX.id = labelX.textContent= inputArg_X.id;
+                labelx.htmlFor = labelx.id = labelx.textContent = inputArg_x.id;
+
+                divImpactX.appendChild(labelX);
+                divImpactX.appendChild(inputArg_X);
+
+                divImpactx.appendChild(labelx);
+                divImpactx.appendChild(inputArg_x);
+            }
+        }
+
+        //If there is an argument that is displayed that disapeared
+        const diff = displayedArguments.filter(x => !setOfArguments.includes(x));
+        const divImpactXChildElts = divImpactX.children;
+        const divImpactxChildElts = divImpactx.children;
+        for (let i = divImpactXChildElts.length - 1; i >= 0; i--) {
+            if (diff.has(divImpactXChildElts[i].id)) {
+                divImpactXChildElts.removeChild(divImpactXChildElts[i]);
+                divImpactxChildElts.removeChild(divImpactxChildElts[i]);
+            }
+        }
+
+
+
+
+        console.log(diff);
+
+
         console.log(setOfArguments);
+
+
 
     }
 
@@ -270,8 +322,8 @@
 
             var labelX = document.createElement("label");
             var labelx = document.createElement("label");
-            labelX.htmlFor = labelX.textContent= inputArg_X.id;
-            labelx.htmlFor = labelx.textContent = inputArg_x.id;
+            labelX.htmlFor = labelX.id = labelX.textContent= inputArg_X.id;
+            labelx.htmlFor = labelx.id = labelx.textContent = inputArg_x.id;
 
             divImpactX.appendChild(labelX);
             divImpactX.appendChild(inputArg_X);
