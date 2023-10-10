@@ -66,6 +66,11 @@
                     <label for="card">Card-based semantics</label>
                 </div>
 
+                <div id="impact_div">
+                    <div id="X_impact"></div>
+                    <div id="x_impact"></div>
+                </div>
+
                 <button type="submit">Compute</button>
             </form>
 
@@ -100,16 +105,7 @@
                     <g/>
                 </svg>
 
-                <div id="impact_div">
-                    <form action="{% url 'compute_impact' %}" method="post">
-                        {% csrf_token %}
 
-                        <div id="X_impact"></div>
-                        <div id="x_impact"></div>
-                        <button type="submit" style="display: none;" id="impact_button">Compute Impact!</button>
-                    </form>
-
-                </div>
             </div>
 
 
@@ -185,17 +181,16 @@
                     var divImpactX = document.getElementById("X_impact");
                     var divImpactx = document.getElementById("x_impact");
                     var impactcontainer = document.getElementById("impact_div");
-                    var impact_button = document.getElementById("impact_button");
 
                     if(arg_graph.length > 0){
                         impactcontainer.textContent = "Impact of X on x";
                         divImpactX.textContent = "Arguments in X";
                         divImpactx.textContent = "Arg x";
-                        impact_button.style.display = "block";
+
                     }
                     else{
                         impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = "";
-                        impact_button.style.display = "none";
+
                     }
 
 
