@@ -1,6 +1,6 @@
 # example/urls.py
 from django.urls import path
-from MyApp.views import compute
+from MyApp.views import compute_graph, compute_impact
 from MyApp.views import index
 
 

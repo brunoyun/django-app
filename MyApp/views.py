@@ -34,6 +34,9 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
+def compute_impact(request):
+    return render(request, "MyApp/index.html")
+
 def compute_graph(request):
     if request.method == 'POST':
         text = request.POST.get('input_text', '')  # Get the text from the POST data
