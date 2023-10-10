@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My amazing App</title>
+    <title>Gradual Argumentation Semantics and Impact App</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://dagrejs.github.io/project/graphlib-dot/v0.6.4/graphlib-dot.min.js"></script>
@@ -50,7 +50,7 @@
 
 
 
-            <form action="{% url 'compute_graph' %}" method="post">
+            <form action="{% url 'compute_graph' %}" method="post" id="graph_form">
                 {% csrf_token %}
                 <textarea name="input_text" style="width: 90%; height: 200px; overflow-y: scroll;">arg(a1).arg(a2).att(a1,a2).</textarea>
 
@@ -100,7 +100,7 @@
                     <g/>
                 </svg>
 
-                <form method="post" action="{% url 'compute_impact' %}">
+                <form method="post" action="{% url 'compute_impact' %}" id="impact_form">
                     {% csrf_token %}
 
                     <div id="impact_div"></div>
@@ -123,7 +123,7 @@
 <script>
     //To update the console when clicking and building the dable
     $(document).ready(function () {
-        $('form').on('submit', function (event) {
+        $('#graph_form').on('submit', function (event) {
             event.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -203,7 +203,12 @@
 
                 }
             });
+        });
+    });
 
+    $(document).ready(function () {
+        $('#impact_form').on('submit', function (event) {
+            event.preventDefault();
             $.ajax({
                 type: 'POST',
                 url: '{% url "compute_impact" %}',
@@ -223,11 +228,11 @@
 
         const displayedArguments = new Set();
         var X_div = document.getElementById("X_set_impact");
-        X_div.forEach(function(child) {
-            // Access the id attribute of each child element
-            const id = child.id;
+
+        for (var i = 0; i < X_div.children.length; i++) {
+            const id = X_div.children[i].id;
             displayedArguments.push(id); // Store the id in the array
-        });
+        }
         console.log(displayedArguments);
 
     }
