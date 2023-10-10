@@ -187,10 +187,12 @@
 
                         button_impact.style.display= "block";
 
-                        if (impactcontainer.textContent==""){
+                        if (impactcontainer.textContent==""){ //This happens when there is nothing in this section
                             createImpactSelection(impactcontainer,arg_graph);
                         }
-
+                        else{ //In this case, we only add/remove the cells for the arguments that are missing
+                            updateImpactSelection(impactcontainer,arg_graph);
+                        }
                     }
                     else{
                         //If there are no arguments, we remove the access to impact
@@ -202,8 +204,33 @@
                 }
             });
 
+            $.ajax({
+                type: 'POST',
+                url: '{% url "compute_impact" %}',
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#outputDiv').text(data.console);
+                }
+            });
         });
     });
+
+    function updateImpactSelection(impactcontainer,arg_graph){
+        const setOfArguments = new Set();
+        for (var i = 0; i < arg_graph.length; i++) {
+            setOfArguments.add(arg_graph[i].arg);
+        }
+
+        const displayedArguments = new Set();
+        var X_div = document.getElementById("X_set_impact");
+        X_div.forEach(function(child) {
+            // Access the id attribute of each child element
+            const id = child.id;
+            displayedArguments.push(id); // Store the id in the array
+        });
+        console.log(displayedArguments);
+
+    }
 
 
     function createImpactSelection(impactcontainer,arg_graph){

@@ -36,7 +36,7 @@ def index(request):
 
 def compute_impact(request):
     if request.method == "POST":
-        return JsonResponse({'answer': ""})
+        return JsonResponse({'console': "test"})
     return render(request, "MyApp/index.html")
 
 def compute_graph(request):
