@@ -66,8 +66,7 @@
                     <label for="card">Card-based semantics</label>
                 </div>
 
-                <div id="impact_div">
-                </div>
+                <div id="impact_div"></div>
 
                 <button type="submit">Compute</button>
             </form>
@@ -179,40 +178,8 @@
                     var impactcontainer = document.getElementById("impact_div");
 
                     if(arg_graph.length > 0){
-                        impactcontainer.textContent = "<h2>Impact of X on x</h2>";
-
-                        var divImpactX = document.createElement("div");
-                        divImpactX.id = "X_set_impact";
-                        var divImpactx = document.createElement("div");
-                        divImpactx.id = "x_impact";
-
-                        impactcontainer.appendChild(divImpactX);
-                        impactcontainer.appendChild(divImpactx);
-                        divImpactX.textContent = "Arguments in X: ";
-                        divImpactx.textContent = "Arg x: ";
-
-                        for (var i=0; i< arg_graph.length; i++){
-
-                            var inputArg_X = document.createElement("input");
-                            var inputArg_x = document.createElement("input");
-                            inputArg_X.type = "checkbox";
-                            inputArg_x.type = "radio";
-
-                            inputArg_X.name = "X_set";
-                            inputArg_x.name = "x_arg";
-
-                            inputArg_X.id = inputArg_X.value = inputArg_x.id = inputArg_x.value = arg_graph[i].arg;
-
-                            var labelX = document.createElement("label");
-                            var labelx = document.createElement("label");
-                            labelX.htmlFor = labelX.textContent= inputArg_X.id;
-                            labelx.htmlFor = labelx.textContent = inputArg_x.id;
-
-                            divImpactX.appendChild(labelX);
-                            divImpactX.appendChild(inputArg_X);
-
-                            divImpactx.appendChild(labelx);
-                            divImpactx.appendChild(inputArg_x);
+                        if (impactcontainer.textContent==""){
+                            createImpactSelection(impactcontainer);
                         }
                     }
                     else{
@@ -228,7 +195,47 @@
     });
 
 
+    function createImpactSelection(impactcontainer){
+        //We erase and redraw
+        impactcontainer.textContent="";
+        var titleImpact = document.createElement("h2");
+        titleImpact.innerHTML = "Impact of X on x";
+        impactcontainer.appendChild(titleImpact);
 
+        var divImpactX = document.createElement("div");
+        divImpactX.id = "X_set_impact";
+        var divImpactx = document.createElement("div");
+        divImpactx.id = "x_impact";
+
+        impactcontainer.appendChild(divImpactX);
+        impactcontainer.appendChild(divImpactx);
+        divImpactX.textContent = "Arguments in X: ";
+        divImpactx.textContent = "Arg x: ";
+
+        for (var i=0; i< arg_graph.length; i++){
+
+            var inputArg_X = document.createElement("input");
+            var inputArg_x = document.createElement("input");
+            inputArg_X.type = "checkbox";
+            inputArg_x.type = "radio";
+
+            inputArg_X.name = "X_set";
+            inputArg_x.name = "x_arg";
+
+            inputArg_X.id = inputArg_X.value = inputArg_x.id = inputArg_x.value = arg_graph[i].arg;
+
+            var labelX = document.createElement("label");
+            var labelx = document.createElement("label");
+            labelX.htmlFor = labelX.textContent= inputArg_X.id;
+            labelx.htmlFor = labelx.textContent = inputArg_x.id;
+
+            divImpactX.appendChild(labelX);
+            divImpactX.appendChild(inputArg_X);
+
+            divImpactx.appendChild(labelx);
+            divImpactx.appendChild(inputArg_x);
+        }
+    }
 
 </script>
 
