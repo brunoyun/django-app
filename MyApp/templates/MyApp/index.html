@@ -106,7 +106,7 @@
 
                         <div id="X_impact"></div>
                         <div id="x_impact"></div>
-                        <!-- <button type="submit"></button> This will be added by javascript-->
+                        <button type="submit" style="display: none;" id="impact_button">Compute Impact!</button>
                     </form>
 
                 </div>
@@ -185,15 +185,17 @@
                     var divImpactX = document.getElementById("X_impact");
                     var divImpactx = document.getElementById("x_impact");
                     var impactcontainer = document.getElementById("impact_div");
+                    var impact_button = document.getElementById("impact_button");
 
                     if(arg_graph.length > 0){
-                        impactcontainer.textContent = "Impact of X on x"
-                        divImpactX.textContent = "Arguments in X"
-                        divImpactx.textContent = "Arg x"
+                        impactcontainer.textContent = "Impact of X on x";
+                        divImpactX.textContent = "Arguments in X";
+                        divImpactx.textContent = "Arg x";
+                        impact_button.style.display = "block";
                     }
                     else{
-                        impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = ""
-
+                        impactcontainer.textContent = divImpactX.textContent = divImpactx.textContent = "";
+                        impact_button.style.display = "none";
                     }
 
 
