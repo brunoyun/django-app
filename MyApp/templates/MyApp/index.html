@@ -268,13 +268,13 @@
         }
 
         //If there is an argument that is displayed that disapeared
-        const diff = displayedArguments.filter(function(x) {
-            return setOfArguments.indexOf(x) < 0;
+        const diff = Array.from(displayedArguments).filter(function(x) {
+            return Array.from(setOfArguments).indexOf(x) < 0;
         });
         const divImpactXChildElts = divImpactX.children;
         const divImpactxChildElts = divImpactx.children;
         for (let i = divImpactXChildElts.length - 1; i >= 0; i--) {
-            if (diff.has(divImpactXChildElts[i].id)) {
+            if (diff.indexOf(divImpactXChildElts[i].id) >=0) {
                 divImpactXChildElts.removeChild(divImpactXChildElts[i]);
                 divImpactxChildElts.removeChild(divImpactxChildElts[i]);
             }
