@@ -43,11 +43,11 @@ def compute_impact(request):
         else:
             console_text+= "The target argument is: "+x+".\n"
 
-        X = request.POST.get("X_set")
-        if x is None:
+        X = request.POST.getlist("X_set")
+        if not X:
             console_text+= "No source argument(s) have been selected.\n"
         else:
-            console_text+= "The source argument(s) are: "+X+".\n"
+            console_text+= "The source argument(s) are: "+', '.join(X)+".\n"
 
         graph_ASPARTIX = request.POST.get("hidden_graph")
 
