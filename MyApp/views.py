@@ -61,6 +61,10 @@ def compute_impact(request):
         else:
             G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(request.POST.get("hidden_graph"))
 
+            retrieved_degree = json.loads(request.POST.get("hidden_degree"))
+            retrieved_intensity = json.loads(request.POST.get("hidden_attacks"))
+
+
             # if sem_impact == "delobelle":
             #     impact = impact_delobelle(G,"cat",{5,6},0)
 
@@ -85,8 +89,8 @@ def compute_graph(request):
         set_degrees(G,sem=selected_semantics)
         set_Shapley_measure(G,sem=selected_semantics)
 
-        information_arg = [{"arg": index_dict[i],
-                       "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
+        information_arg = [{'arg': index_dict[i],
+                       'degree': round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
         information_attacks = str([{"source": index_dict[i],
                                 "target": index_dict[j],
