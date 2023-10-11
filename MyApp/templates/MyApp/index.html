@@ -262,9 +262,10 @@
 
                 var labelX = document.createElement("label");
                 var labelx = document.createElement("label");
-                labelX.htmlFor = labelX.textContent= inputArg_X.id;
-                labelx.htmlFor = labelx.textContent = inputArg_x.id;
-
+                labelX.htmlFor =  inputArg_X.id;
+                labelx.htmlFor =  inputArg_x.id;
+                labelX.textContent=current_arg;
+                labelx.textContent =current_arg;
 
                 divImpactX.appendChild(inputArg_X);
                 divImpactX.appendChild(labelX);
@@ -329,18 +330,22 @@
             inputArg_X.name = "X_set";
             inputArg_x.name = "x_arg";
 
-            inputArg_X.id = inputArg_X.value = inputArg_x.id = inputArg_x.value = arg_graph[i].arg;
+            inputArg_X.id = inputArg_X.value = "X"+current_arg;
+            inputArg_x.id = inputArg_x.value = "x"+current_arg;
 
             var labelX = document.createElement("label");
             var labelx = document.createElement("label");
-            labelX.htmlFor = labelX.id = labelX.textContent= inputArg_X.id;
-            labelx.htmlFor = labelx.id = labelx.textContent = inputArg_x.id;
+            labelX.htmlFor =  inputArg_X.id;
+            labelx.htmlFor =  inputArg_x.id;
+            labelX.textContent=current_arg;
+            labelx.textContent =current_arg;
 
-            divImpactX.appendChild(labelX);
             divImpactX.appendChild(inputArg_X);
+            divImpactX.appendChild(labelX);
 
-            divImpactx.appendChild(labelx);
             divImpactx.appendChild(inputArg_x);
+            divImpactx.appendChild(labelx);
+
         }
     }
 
