@@ -49,6 +49,12 @@ def compute_impact(request):
         else:
             console_text+= "The source argument(s) are: "+', '.join(X)+".\n"
 
+        sem_impact = request.POST.get("sem_impact")
+        if  sem_impact == "delobelle":
+            console_text+= "Delobelle's impact semantics is selected.\n"
+        else:
+            console_text+= "Shapley-based impact semantics is selected.\n"
+
         if((not X) or (x is None)):
             console_text+= "Computation aborted.\n"
         else:

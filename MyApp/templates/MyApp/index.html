@@ -121,7 +121,7 @@
 
                     <input type="hidden" name="hidden_graph" id="hidden_graph">
 
-                    <button type="submit" style="display: none;" id="button_impact">Compute Immpact</button>
+                    <button type="submit" style="display: none;" id="button_impact">Compute Impact</button>
                 </form>
 
             </div>
@@ -297,6 +297,7 @@
         labelOpt.textContent = label_text;
         container.append(inputOpt);
         container.append(labelOpt);
+        return inputOpt;
     }
 
     function createImpactSelection(impactcontainer,arg_graph){
@@ -307,22 +308,29 @@
         impactcontainer.appendChild(titleImpact);
 
         var divImpactX = document.createElement("div");
-        divImpactX.id = "X_set_impact";
         var divImpactx = document.createElement("div");
+        var semImpact = document.createElement("div");
+        divImpactX.id = "X_set_impact";
         divImpactx.id = "x_impact";
+        semImpact.id = "sem_impact";
 
         impactcontainer.appendChild(divImpactX);
         impactcontainer.appendChild(divImpactx);
+        impactcontainer.appendChild(semImpact);
         divImpactX.textContent = "X: ";
         divImpactx.textContent = "x: ";
+        semImpact.textContent = "Impact semantics:"
 
-
-
+        //We add the possible arguments to select
         for (var i=0; i< arg_graph.length; i++){
             current_arg = arg_graph[i].arg;
             appendInputOption(divImpactx, "radio", "x_arg", "x"+current_arg, current_arg);
             appendInputOption(divImpactX, "checkbox", "X_set", "X"+current_arg, current_arg);
         }
+
+        //We add the possible semantics
+        appendInputOption(semImpact,"radio","sem_impact","delobelle","Delobelle").checked = true;
+        appendInputOption(semImpact,"radio","sem_impact","shapley","Shapley-based");
     }
 
 </script>
