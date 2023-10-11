@@ -235,7 +235,7 @@
         for (var i = 0; i < X_div.children.length; i++) {
             const id = X_div.children[i].id;
             if (id != ""){
-                displayedArguments.add(id); // Store the id in the array
+                displayedArguments.add(id.substring(1)); // Store the id in the array (we remove the X at the beginning).
             }
         }
         console.log(displayedArguments);
