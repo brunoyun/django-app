@@ -37,16 +37,24 @@ def index(request):
 def compute_impact(request):
     if request.method == "POST":
         console_text = "Impact computation started.\n"
-        x = request.POST.get("x_impact")
+        x = request.POST.get("x_arg")
         if x is None:
             console_text+= "The target argument has not been selected.\n"
         else:
             console_text+= "The target argument is: "+x+".\n"
 
-        console_text+="I got the graph back"+request.POST.get("hidden_graph")
+        X = request.POST.get("X_set")
+        if x is None:
+            console_text+= "No source argument(s) have been selected.\n"
+        else:
+            console_text+= "The source argument(s) are: "+X+".\n"
+
+        graph_ASPARTIX = request.POST.get("hidden_graph")
 
 
-        return JsonResponse({'console': console_text})
+        return JsonResponse({'console': console_text,
+                             'X': X,
+                             'x': x})
     return render(request, "MyApp/index.html")
 
 def compute_graph(request):
