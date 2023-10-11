@@ -38,7 +38,7 @@ def compute_impact(request):
     if request.method == "POST":
         console_text = "Impact computation started.\n"
         x = request.POST.get("x_impact")
-        if x==None:
+        if x is None:
             console_text+= "The target argument has not been selected.\n"
         else:
             console_text+= "The target argument is: "+x+".\n"
