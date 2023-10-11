@@ -49,7 +49,10 @@ def compute_impact(request):
         else:
             console_text+= "The source argument(s) are: "+', '.join(X)+".\n"
 
-        graph_ASPARTIX = request.POST.get("hidden_graph")
+        if((not X) or (x is None)):
+            console_text+= "Computation aborted.\n"
+        else:
+            G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(request.POST.get("hidden_graph"))
 
 
         return JsonResponse({'console': console_text,
@@ -62,47 +65,12 @@ def compute_graph(request):
         text = request.POST.get('input_text', '')  # Get the text from the POST data
         selected_semantics = request.POST.get("semantics")
 
-
-        console_text = "Graph computation started.\n"
-        text = text.replace('\n', '').replace('\r', '')
-        text = text.replace(" ", "")
-        text_split = text.split(".")
-
-        arguments = set()
-        console_text += "Parsing started.\n"
-        #Parsing of the arguments
-        for t in text_split:
-            if t[:4] == "arg(":
-                arguments.add(t[4:-1])
-
-        console_text += str(len(arguments)) + " arguments found:\n"
-        for arg in arguments:
-            console_text += "- "+arg+"\n"
-
-        attacks = set()
-        for t in text_split:
-            if t[:4] == "att(":
-                att_split = t[4:-1].split(",")
-                if (att_split[0] in arguments) and (att_split[1] in arguments):
-                    attacks.add((att_split[0],att_split[1]))
-                else:
-                     console_text += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
-
-        console_text += str(len(attacks)) + " attacks found:\n"
-        for (a,b) in attacks:
-            console_text+= "- "+a + " attacks "+ b+"\n"
-
-
-        index_dict = { i: a for (i,a) in enumerate(arguments)}
-        arg_dict = { a: i for (i,a) in enumerate(arguments)}
-
-
-
+        #We parse the text
+        console_text = "Graph parsing started.\n"
+        G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(text)
+        console_text+= parse_logs
 
         console_text += "Computing semantics using the semantics: "+selected_semantics+". \n"
-        G = nx.DiGraph()
-        G.add_nodes_from(range(len(arguments)))
-        G.add_edges_from([(arg_dict[a],arg_dict[b]) for (a,b) in attacks])
         set_degrees(G,sem=selected_semantics)
         set_Shapley_measure(G,sem=selected_semantics)
 
@@ -111,7 +79,6 @@ def compute_graph(request):
 
         gdata_input =convert_to_dot(G,index_dict)
 
-
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
                          'information_arg': information_arg}
@@ -119,6 +86,46 @@ def compute_graph(request):
     return render(request, "MyApp/index.html")
 
 
+def ASPTONETX(text):
+    parse_logs =""
+
+    text = text.replace('\n', '').replace('\r', '')
+    text = text.replace(" ", "")
+    text_split = text.split(".")
+    arguments = set()
+    parse_logs += "Parsing started.\n"
+    #Parsing of the arguments
+    for t in text_split:
+        if t[:4] == "arg(":
+            arguments.add(t[4:-1])
+
+    parse_logs += str(len(arguments)) + " arguments found:\n"
+    for arg in arguments:
+        parse_logs += "- "+arg+"\n"
+
+    attacks = set()
+    for t in text_split:
+        if t[:4] == "att(":
+            att_split = t[4:-1].split(",")
+            if (att_split[0] in arguments) and (att_split[1] in arguments):
+                attacks.add((att_split[0],att_split[1]))
+            else:
+                parse_logs += "Problem with parsing an attack. You may have declared an attack before declaring an argument.\n"
+
+    parse_logs += str(len(attacks)) + " attacks found:\n"
+    for (a,b) in attacks:
+        parse_logs+= "- "+a + " attacks "+ b+"\n"
+
+    index_dict = { i: a for (i,a) in enumerate(arguments)}
+    arg_dict = { a: i for (i,a) in enumerate(arguments)}
+
+
+    G = nx.DiGraph()
+    G.add_nodes_from(range(len(arguments)))
+    G.add_edges_from([(arg_dict[a],arg_dict[b]) for (a,b) in attacks])
+    parse_logs += "Graph creation completed.\n"
+
+    return G, parse_logs, index_dict,arg_dict,arguments,attacks
 
 def set_degrees(G, sem="cat", epsilon=0.0001):
 
@@ -226,3 +233,51 @@ def convert_to_dot(G,index_dict):
             result+= str(i)+" -> "+str(j)+" [label="+str(round(G[i][j]["attack_intensity"],3))+"];"
 
     return result+"}"
+
+
+def impact_delobelle(G, sem, X,y, recompute=True):
+
+    if recompute:
+        set_degrees(G, sem)
+
+
+
+    if X != {}:
+
+        X2 = np.array(reduce(np.union1d, [[x for x in G.predecessors(i)] for i in X])).astype(int) #We get the attackers of X
+        X2 = X2[~np.isin(X2,list(X))] #we ignore those direct attackers in X (we only have the external attackers)
+        C = []
+        for (u,v) in G.edges():
+            if (u in X2) and (v in X):
+                C.append((u,v))
+
+        G2 = attack_deletion(G,C,y) #We use the attack deletion method (new)
+        G1 = complement(G,X,y)
+
+        set_degrees(G2,sem)
+        set_degrees(G1,sem)
+
+        return G2.nodes[y]["degree"] - G1.nodes[y]["degree"]
+    else:
+        return 0
+
+def complement(G, X,y):
+    G2 = nx.DiGraph()
+    for g in G.nodes():
+        if (g not in X) or (g == y):
+            G2.add_node(g)
+
+    for (u,v) in G.edges():
+        if (u not in [x for x in X if x!=y]) and (v not in [x for x in X if x!=y]):
+            G2.add_edge(u,v)
+    return G2
+
+def attack_deletion(G,C,y):
+    G2 = nx.DiGraph()
+    for g in G.nodes():
+        G2.add_node(g)
+
+    for (u,v) in G.edges():
+        if ((u,v) not in C):
+            G2.add_edge(u,v)
+    return G2
