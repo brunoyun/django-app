@@ -37,6 +37,7 @@ def index(request):
 def compute_impact(request):
     if request.method == "POST":
         console_text = "Impact computation started.\n"
+        impact = -2
         x = request.POST.get("x_arg")[1:]
         if x is None:
             console_text+= "The target argument has not been selected.\n"
@@ -60,10 +61,14 @@ def compute_impact(request):
         else:
             G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(request.POST.get("hidden_graph"))
 
+            # if sem_impact == "delobelle":
+            #     impact = impact_delobelle(G,"cat",{5,6},0)
+
 
         return JsonResponse({'console': console_text,
                              'X': X,
-                             'x': x})
+                             'x': x,
+                             'impact': impact})
     return render(request, "MyApp/index.html")
 
 def compute_graph(request):
@@ -83,11 +88,15 @@ def compute_graph(request):
         information_arg = [{"arg": index_dict[i],
                        "degree": round(G.nodes[i]["degree"],3)} for i in range(len(arguments))]
 
+        information_attacks = str([{"source": index_dict[i],
+                                "target": index_dict[j],
+                                "contribution": G[i][j]["attack_intensity"]} for (i,j) in G.edges()])
         gdata_input =convert_to_dot(G,index_dict)
 
         response_data = {'console': console_text,
                          'graph_data': gdata_input,
-                         'information_arg': information_arg}
+                         'information_arg': information_arg,
+                         'information_attacks': information_attacks}
         return JsonResponse(response_data)  # Return the result as JSON
     return render(request, "MyApp/index.html")
 

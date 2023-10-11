@@ -120,6 +120,8 @@
                     <div id="impact_div"></div>
 
                     <input type="hidden" name="hidden_graph" id="hidden_graph">
+                    <input type="hidden" name="hidden_degree" id="hidden_degree">
+                    <input type="hidden" name="hidden_attacks" id="hidden_attacks">
 
                     <button type="submit" style="display: none;" id="button_impact">Compute Impact</button>
                 </form>
@@ -159,6 +161,10 @@
 
                     var table = document.getElementById("degree_table");
                     var arg_graph = data.information_arg;
+
+                    //Copying the degree and intensity information
+                    document.getElementById("hidden_attacks").value = data.information_attacks;
+                    document.getElementById("hidden_degree").value = String(data.information_arg);
 
                     // Clear existing columns except the first one
                     for (var j=0; j<2; j++){
