@@ -36,7 +36,17 @@ def index(request):
 
 def compute_impact(request):
     if request.method == "POST":
-        return JsonResponse({'console': "test"})
+        console_text = "Impact computation started.\n"
+        x = request.POST.get("x_impact")
+        if x==None:
+            console_text+= "The target argument has not been selected.\n"
+        else:
+            console_text+= "The target argument is: "+x+".\n"
+
+        console_text+="I got the graph back"+request.POST.get("hidden_graph")
+
+
+        return JsonResponse({'console': console_text})
     return render(request, "MyApp/index.html")
 
 def compute_graph(request):
@@ -45,7 +55,7 @@ def compute_graph(request):
         selected_semantics = request.POST.get("semantics")
 
 
-        console_text = "Computation started.\n"
+        console_text = "Graph computation started.\n"
         text = text.replace('\n', '').replace('\r', '')
         text = text.replace(" ", "")
         text_split = text.split(".")

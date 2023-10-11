@@ -52,7 +52,7 @@
 
             <form action="{% url 'compute_graph' %}" method="post" id="graph_form">
                 {% csrf_token %}
-                <textarea name="input_text" style="width: 90%; height: 200px; overflow-y: scroll;">arg(a1).arg(a2).att(a1,a2).</textarea>
+                <textarea name="input_text" style="width: 90%; height: 200px; overflow-y: scroll;" id="input_text">arg(a1).arg(a2).att(a1,a2).</textarea>
 
                 <div>
                     Gradual semantics:
@@ -104,6 +104,8 @@
                     {% csrf_token %}
 
                     <div id="impact_div"></div>
+
+                    <input type="hidden" name="hidden_graph" id="hidden_graph">
 
                     <button type="submit" style="display: none;" id="button_impact">Compute Immpact</button>
                 </form>
@@ -183,6 +185,10 @@
                     var impactcontainer = document.getElementById("impact_div");
                     var button_impact = document.getElementById("button_impact");
 
+                    //We need to pass the graph to the second form
+                    document.getElementById("hidden_graph").value=document.getElementById("input_text").innerHTML;
+
+
                     if(arg_graph.length > 0){
 
                         button_impact.style.display= "block";
@@ -214,8 +220,7 @@
                 url: '{% url "compute_impact" %}',
                 data: $(this).serialize(),
                 success: function (data) {
-                    //$('#outputDiv').append("<p>"+data.console+"</p>");
-                    $('#outputDiv').append("<p>Impact computation started</p>");
+                    $('#outputDiv').append("<p>"+data.console+"</p>");
                 }
             });
         });
