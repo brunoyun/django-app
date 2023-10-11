@@ -37,13 +37,13 @@ def index(request):
 def compute_impact(request):
     if request.method == "POST":
         console_text = "Impact computation started.\n"
-        x = request.POST.get("x_arg")
+        x = request.POST.get("x_arg")[1:]
         if x is None:
             console_text+= "The target argument has not been selected.\n"
         else:
             console_text+= "The target argument is: "+x+".\n"
 
-        X = request.POST.getlist("X_set")
+        X = [s[1:] for s in request.POST.getlist("X_set")]
         if not X:
             console_text+= "No source argument(s) have been selected.\n"
         else:
