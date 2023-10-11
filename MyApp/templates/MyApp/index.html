@@ -53,7 +53,21 @@
             <form action="{% url 'compute_graph' %}" method="post" id="graph_form">
                 {% csrf_token %}
                 <textarea name="input_text" style="width: 90%; height: 200px; overflow-y: scroll;" id="input_text">arg(a1).arg(a2).att(a1,a2).</textarea>
-
+                <!--
+                arg(a1).arg(a2).arg(a3).arg(a4).arg(a5).arg(a6).arg(a7).arg(a8).arg(a9).arg(a10).arg(a11).
+                att(a10,a9).
+                att(a9,a10).
+                att(a9,a8).
+                att(a8,a7).
+                att(a8,a4).
+                att(a6,a5).
+                att(a5,a4).
+                att(a2,a1).
+                att(a1,a2).
+                att(a1,a3).
+                att(a2,a3).
+                att(a3,a4).
+                -->
                 <div>
                     Gradual semantics:
                     <input type="radio" name="semantics" id="cat" value="cat" checked>
@@ -221,8 +235,7 @@
                 data: $(this).serialize(),
                 success: function (data) {
                     $('#outputDiv').append("<p>"+data.console+"</p>");
-                    console.log(data.x);
-                    console.log(data.X);
+
                 }
             });
         });
@@ -250,31 +263,8 @@
             setOfArguments.add(current_arg);
 
             if(!displayedArguments.has(current_arg)){ //If there is an argument that is not displayed, we need to add it
-
-                var inputArg_X = document.createElement("input");
-                var inputArg_x = document.createElement("input");
-                inputArg_X.type = "checkbox";
-                inputArg_x.type = "radio";
-
-                inputArg_X.name = "X_set";
-                inputArg_x.name = "x_arg";
-
-                inputArg_X.id = inputArg_X.value = "X"+current_arg;
-                inputArg_x.id = inputArg_x.value = "x"+current_arg;
-
-                var labelX = document.createElement("label");
-                var labelx = document.createElement("label");
-                labelX.htmlFor =  inputArg_X.id;
-                labelx.htmlFor =  inputArg_x.id;
-                labelX.textContent=current_arg;
-                labelx.textContent =current_arg;
-
-                divImpactX.appendChild(inputArg_X);
-                divImpactX.appendChild(labelX);
-
-
-                divImpactx.appendChild(inputArg_x);
-                divImpactx.appendChild(labelx);
+                appendInputOption(divImpactx, "radio", "x_arg", "x"+current_arg, current_arg);
+                appendInputOption(divImpactX, "checkbox", "X_set", "X"+current_arg, current_arg);
             }
         }
 
@@ -297,7 +287,17 @@
 
     }
 
-
+    function appendInputOption(container, type, name, id_value, label_text){
+        var inputOpt = document.createElement(type);
+        inputOpt.type = type;
+        inputOpt.name = name;
+        inputOpt.id = inputOpt.value = id_value;
+        var labelOpt = document.createElement("label");
+        labelOpt.htmlFor = inputOpt.id;
+        labelOpt.textContent = label_text;
+        container.append(inputOpt);
+        container.append(labelOpt);
+    }
 
     function createImpactSelection(impactcontainer,arg_graph){
         //We erase and redraw
@@ -319,32 +319,9 @@
 
 
         for (var i=0; i< arg_graph.length; i++){
-
             current_arg = arg_graph[i].arg;
-            var inputArg_X = document.createElement("input");
-            var inputArg_x = document.createElement("input");
-            inputArg_X.type = "checkbox";
-            inputArg_x.type = "radio";
-
-            inputArg_X.name = "X_set";
-            inputArg_x.name = "x_arg";
-
-            inputArg_X.id = inputArg_X.value = "X"+current_arg;
-            inputArg_x.id = inputArg_x.value = "x"+current_arg;
-
-            var labelX = document.createElement("label");
-            var labelx = document.createElement("label");
-            labelX.htmlFor =  inputArg_X.id;
-            labelx.htmlFor =  inputArg_x.id;
-            labelX.textContent=current_arg;
-            labelx.textContent =current_arg;
-
-            divImpactX.appendChild(inputArg_X);
-            divImpactX.appendChild(labelX);
-
-            divImpactx.appendChild(inputArg_x);
-            divImpactx.appendChild(labelx);
-
+            appendInputOption(divImpactx, "radio", "x_arg", "x"+current_arg, current_arg);
+            appendInputOption(divImpactX, "checkbox", "X_set", "X"+current_arg, current_arg);
         }
     }
 

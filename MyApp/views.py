@@ -123,7 +123,7 @@ def ASPTONETX(text):
     G = nx.DiGraph()
     G.add_nodes_from(range(len(arguments)))
     G.add_edges_from([(arg_dict[a],arg_dict[b]) for (a,b) in attacks])
-    parse_logs += "Graph creation completed.\n"
+    parse_logs += "Graph parsing completed.\n"
 
     return G, parse_logs, index_dict,arg_dict,arguments,attacks
 
