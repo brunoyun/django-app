@@ -61,9 +61,9 @@ def compute_impact(request):
         else:
             G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(request.POST.get("hidden_graph"))
 
-            #retrieved_degree = json.loads(request.POST.get("hidden_degree"))
+            retrieved_degree = json.loads(request.POST.get("hidden_degree"))
             retrieved_intensity = json.loads(request.POST.get("hidden_attacks").replace("'",'"'))
-            console_text+=retrieved_intensity[0]["source"]
+            console_text+=retrieved_degree[0]["arg"]
 
             # if sem_impact == "delobelle":
             #     impact = impact_delobelle(G,"cat",{5,6},0)
