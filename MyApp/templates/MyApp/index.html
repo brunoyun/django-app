@@ -248,7 +248,7 @@
                 data: $(this).serialize(),
                 success: function (data) {
                     $('#outputDiv').append("<p>"+data.console+"</p>");
-                    document.getElementById(result_impact).innerHTML=data.impact;
+                    document.getElementById("result_impact").innerHTML=data.impact;
 
                 }
             });
