@@ -61,19 +61,39 @@ def compute_impact(request):
         else:
             G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(request.POST.get("hidden_graph"))
 
+            #We retrieve the degrees and attack intensity
             retrieved_degree = json.loads(request.POST.get("hidden_degree"))
             retrieved_intensity = json.loads(request.POST.get("hidden_attacks").replace("'",'"'))
             console_text+=retrieved_degree[0]["arg"]
+            for n in G.nodes():
+                G.nodes[n]["degree"] = jsonArrayExp(retrieved_degree, "arg", index_dict[n],"degree")
 
-            # if sem_impact == "delobelle":
-            #     impact = impact_delobelle(G,"cat",{5,6},0)
+            for (i,j) in G.edges():
+                G[i][j]["attack_intensity"] = jsonArrayExp(retrieved_intensity, "source", index_dict[i],"target", index_dict[j],"contribution")
 
+            if sem_impact == "delobelle":
+                impact = impact_delobelle(G,"cat",{arg_dict[i] for i in X},arg_dict[x],recompute=False)
+            else:
+                impact = impact_shapley(G,"cat",{arg_dict[i] for i in X},arg_dict[x], recompute=False)
+
+            console_text+= "The impact is: "+impact+"\n"
 
         return JsonResponse({'console': console_text,
                              'X': X,
                              'x': x,
                              'impact': impact})
     return render(request, "MyApp/index.html")
+
+
+def jsonArrayExp(tabJson,key,valueKey, valueName):
+    for i in range(len(tabJson)):
+        if tabJson[i][key]== valueKey:
+            return tabJson[i][valueName]
+
+def jsonArrayExp(tabJson,key1,valueKey1,key2,valueKey2, valueName):
+    for i in range(len(tabJson)):
+        if tabJson[i][key1]== valueKey1 and tabJson[i][key2]== valueKey2:
+            return tabJson[i][valueName]
 
 def compute_graph(request):
     if request.method == 'POST':
@@ -300,3 +320,41 @@ def attack_deletion(G,C,y):
         if ((u,v) not in C):
             G2.add_edge(u,v)
     return G2
+
+def find_path_from(G,u,n): #This creates all the paths from u
+    if n==0:
+        return [[u]]
+    paths = [[u]+path for neighbor in G.successors(u) for path in find_path_from(G,neighbor,n-1)]
+    return paths
+
+def find_path_from_to(G,u,v,n):
+    paths_from_u = find_path_from(G,u,n)
+    return [p for p in paths_from_u if p[-1]==v]
+def impact_shapley(G, sem, X,y, recompute=True):
+
+    ##We approximate by looking at most at paths of size 20n
+    n = len(G.nodes())
+
+    if recompute:
+        set_degrees(G, sem)
+        set_Shapley_measure(G, sem)
+
+    result_impact=0
+
+    for x in X:
+        for i in range(1,20*n+1):
+            P = find_path_from_to(G,x,y,i)
+            total_paths_size_i = 0
+            for p in P:
+                path_value = 1
+                for j in range(len(p) - 1):
+                    path_value *= G[p[j]][p[j+1]]["attack_intensity"]
+                total_paths_size_i += path_value
+
+            if i%2 == 0:
+                result_impact += total_paths_size_i
+            else:
+                result_impact -= total_paths_size_i
+
+    #return math.tanh(result_impact)
+    return result_impact
