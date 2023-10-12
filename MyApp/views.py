@@ -66,10 +66,10 @@ def compute_impact(request):
             retrieved_intensity = json.loads(request.POST.get("hidden_attacks").replace("'",'"'))
             console_text+=retrieved_degree[0]["arg"]
             for n in G.nodes():
-                G.nodes[n]["degree"] = jsonArrayExp(retrieved_degree, "arg", index_dict[n],"degree")
+                G.nodes[n]["degree"] = jsonArrayExp1(retrieved_degree, "arg", index_dict[n],"degree")
 
             for (i,j) in G.edges():
-                G[i][j]["attack_intensity"] = jsonArrayExp(retrieved_intensity, "source", index_dict[i],"target", index_dict[j],"contribution")
+                G[i][j]["attack_intensity"] = jsonArrayExp2(retrieved_intensity, "source", index_dict[i],"target", index_dict[j],"contribution")
 
             if sem_impact == "delobelle":
                 impact = impact_delobelle(G,"cat",{arg_dict[i] for i in X},arg_dict[x],recompute=False)
@@ -85,12 +85,12 @@ def compute_impact(request):
     return render(request, "MyApp/index.html")
 
 
-def jsonArrayExp(tabJson,key,valueKey, valueName):
+def jsonArrayExp1(tabJson,key,valueKey, valueName):
     for i in range(len(tabJson)):
         if tabJson[i][key]== valueKey:
             return tabJson[i][valueName]
 
-def jsonArrayExp(tabJson,key1,valueKey1,key2,valueKey2, valueName):
+def jsonArrayExp2(tabJson,key1,valueKey1,key2,valueKey2, valueName):
     for i in range(len(tabJson)):
         if tabJson[i][key1]== valueKey1 and tabJson[i][key2]== valueKey2:
             return tabJson[i][valueName]
