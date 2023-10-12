@@ -125,6 +125,8 @@
                     <input type="hidden" name="hidden_sem" id="hidden_sem">
 
                     <button type="submit" style="display: none;" id="button_impact">Compute Impact</button>
+
+                    <h1 id="result_impact"></h1>
                 </form>
 
             </div>
@@ -166,6 +168,8 @@
                     //Copying the degree and intensity information
                     document.getElementById("hidden_attacks").value = data.information_attacks;
                     document.getElementById("hidden_degree").value = JSON.stringify(data.information_arg);
+                    document.getElementById("result_impact").innerHTML="";
+
 
                     // Clear existing columns except the first one
                     for (var j=0; j<2; j++){
@@ -244,6 +248,7 @@
                 data: $(this).serialize(),
                 success: function (data) {
                     $('#outputDiv').append("<p>"+data.console+"</p>");
+                    document.getElementById(result_impact).innerHTML=data.impact;
 
                 }
             });
