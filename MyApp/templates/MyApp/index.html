@@ -277,7 +277,7 @@
                 displayedArguments.add(id.substring(1)); // Store the id in the array (we remove the X at the beginning).
             }
         }
-        console.log(displayedArguments);
+
 
         const setOfArguments = new Set();
         var divImpactX = document.getElementById("X_set_impact");
@@ -296,6 +296,11 @@
         const diff = Array.from(displayedArguments).filter(function(x) {
             return Array.from(setOfArguments).indexOf(x) < 0;
         });
+
+        console.log(displayedArguments);
+        console.log(setOfArguments);
+        console.log(diff);
+
         const divImpactXChildElts = divImpactX.children;
         const divImpactxChildElts = divImpactx.children;
         for (let i = divImpactXChildElts.length - 1; i >= 0; i--) {
