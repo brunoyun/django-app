@@ -322,7 +322,7 @@
         inputOpt.name = name;
         inputOpt.id = inputOpt.value = id_value;
         var labelOpt = document.createElement("label");
-        labelOpt.htmlFor = inputOpt.id;
+        labelOpt.htmlFor= labelOpt.id = inputOpt.id;
         labelOpt.textContent = label_text;
         container.append(inputOpt);
         container.append(labelOpt);
