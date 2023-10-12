@@ -76,7 +76,7 @@ def compute_impact(request):
             else:
                 impact = impact_shapley(G,"cat",{arg_dict[i] for i in X},arg_dict[x], recompute=False)
 
-            console_text+= "The impact is: "+impact+"\n"
+            console_text+= "The impact is: "+str(impact)+"\n"
 
         return JsonResponse({'console': console_text,
                              'X': X,
