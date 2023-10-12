@@ -122,6 +122,7 @@
                     <input type="hidden" name="hidden_graph" id="hidden_graph">
                     <input type="hidden" name="hidden_degree" id="hidden_degree">
                     <input type="hidden" name="hidden_attacks" id="hidden_attacks">
+                    <input type="hidden" name="hidden_sem" id="hidden_sem">
 
                     <button type="submit" style="display: none;" id="button_impact">Compute Impact</button>
                 </form>
@@ -208,6 +209,8 @@
                     //We need to pass the graph to the second form
                     document.getElementById("hidden_graph").value=document.getElementById("input_text").value;
 
+                    //We need to pass the selected semantics
+                    document.getElementById("hidden_sem").value= displayRadioValue("semantics");
 
                     if(arg_graph.length > 0){
 
@@ -246,6 +249,16 @@
             });
         });
     });
+
+    function displayRadioValue(name) {
+        var ele = document.getElementsByName(name);
+
+        for (i = 0; i < ele.length; i++) {
+            if (ele[i].checked)
+                return ele[i].value;
+        }
+    }
+
 
     function updateImpactSelection(impactcontainer,arg_graph){
 

@@ -60,11 +60,12 @@ def compute_impact(request):
             console_text+= "Computation aborted.\n"
         else:
             G, parse_logs, index_dict,arg_dict,arguments,attacks = ASPTONETX(request.POST.get("hidden_graph"))
+            sem = request.POST.get("hidden_sem")
 
             #We retrieve the degrees and attack intensity
             retrieved_degree = json.loads(request.POST.get("hidden_degree"))
             retrieved_intensity = json.loads(request.POST.get("hidden_attacks").replace("'",'"'))
-            console_text+=retrieved_degree[0]["arg"]
+
             for n in G.nodes():
                 G.nodes[n]["degree"] = jsonArrayExp1(retrieved_degree, "arg", index_dict[n],"degree")
 
@@ -72,9 +73,9 @@ def compute_impact(request):
                 G[i][j]["attack_intensity"] = jsonArrayExp2(retrieved_intensity, "source", index_dict[i],"target", index_dict[j],"contribution")
 
             if sem_impact == "delobelle":
-                impact = impact_delobelle(G,"cat",{arg_dict[i] for i in X},arg_dict[x],recompute=False)
+                impact = impact_delobelle(G,sem,{arg_dict[i] for i in X},arg_dict[x],recompute=False)
             else:
-                impact = impact_shapley(G,"cat",{arg_dict[i] for i in X},arg_dict[x], recompute=False)
+                impact = impact_shapley(G,sem,{arg_dict[i] for i in X},arg_dict[x], recompute=False)
 
             console_text+= "The impact is: "+str(impact)+"\n"
 
