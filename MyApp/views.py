@@ -168,44 +168,73 @@ def ASPTONETX(text):
     return G, parse_logs, index_dict,arg_dict,arguments,attacks
 
 def set_degrees(G, sem="cat", epsilon=0.0001):
-
-    num_nodes = G.number_of_nodes()
-    current_degrees = np.array([1 for i in range(num_nodes)])
     list_nodes = list(G.nodes())
 
-    error = 100
-
-    while error >= epsilon:
-        temp_degrees = np.array([])
-
-        for i in range(num_nodes):
-            att_i = [x for x in G.predecessors(list_nodes[i])]
+    if(sem=="cs"):
+        current_degrees = counting(G, epsilon)
+    elif(sem in ["cat","max","card"]):
+        num_nodes = G.number_of_nodes()
+        current_degrees = np.array([1 for i in range(num_nodes)])
 
 
+        error = 100
 
-            if att_i == []:
-                temp_degrees = np.append(temp_degrees,1)
-            else:
-                index_attackers = [np.where(np.array(list_nodes)==z)[0] for z in att_i]
-                att_i = reduce(np.union1d, index_attackers)
+        while error >= epsilon:
+            temp_degrees = np.array([])
 
-                if sem == "cat":
-                    temp_degrees = np.append(temp_degrees,1 / (1 + sum([current_degrees[j] for j in att_i])))
-                elif sem == "max":
-                    temp_degrees = np.append(temp_degrees,1 / (1 + max([current_degrees[j] for j in att_i])))
-                elif sem == "card":
-                    temp_degrees = np.append(temp_degrees,1 / (1 + len(att_i)+ sum([current_degrees[j] for j in att_i])/len(att_i)))
+            for i in range(num_nodes):
+                att_i = [x for x in G.predecessors(list_nodes[i])]
 
 
-        ## We calculate the error
-        error = np.linalg.norm(temp_degrees - current_degrees)
 
-        current_degrees = temp_degrees
+                if att_i == []:
+                    temp_degrees = np.append(temp_degrees,1)
+                else:
+                    index_attackers = [np.where(np.array(list_nodes)==z)[0] for z in att_i]
+                    att_i = reduce(np.union1d, index_attackers)
+
+                    if sem == "cat":
+                        temp_degrees = np.append(temp_degrees,1 / (1 + sum([current_degrees[j] for j in att_i])))
+                    elif sem == "max":
+                        temp_degrees = np.append(temp_degrees,1 / (1 + max([current_degrees[j] for j in att_i])))
+                    elif sem == "card":
+                        temp_degrees = np.append(temp_degrees,1 / (1 + len(att_i)+ sum([current_degrees[j] for j in att_i])/len(att_i)))
+
+
+            ## We calculate the error
+            error = np.linalg.norm(temp_degrees - current_degrees)
+
+            current_degrees = temp_degrees
 
 
 
     nx.set_node_attributes(G,{list_nodes[i]: deg for (i,deg) in enumerate(current_degrees)}, name="degree")
     return G
+
+
+
+
+def v(alpha,G,k):
+    M = np.transpose(np.array(nx.adjacency_matrix(G).todense()))
+    N = np.linalg.norm(M,np.inf)
+    M2 = M/N
+    M2k = np.linalg.matrix_power(M2,k)
+    vM2k = np.sum(M2k,axis=1)*pow(alpha,k)*pow(-1,k)
+    return vM2k
+
+def counting(G, epsilon=0.0001):
+    alpha=0.98
+    k=1
+    current = v(alpha,G,0)
+    finished=False
+    while(not finished):
+        new = v(alpha,G,k)
+        error = np.linalg.norm(new)
+        current += new
+        k+=1
+        if(error<epsilon):
+            finished=True
+    return current
 
 
 def copy_graph_without_X(G,X):
