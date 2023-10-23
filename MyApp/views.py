@@ -330,15 +330,16 @@ def impact_delobelle(G, sem, X,y, recompute=True):
     else:
         return 0
 
-def complement(G, X,y):
+
+def complement(G, X, y):
     G2 = nx.DiGraph()
     for g in G.nodes():
         if (g not in X) or (g == y):
             G2.add_node(g)
 
-    for (u,v) in G.edges():
-        if (u not in [x for x in X if x!=y]) and (v not in [x for x in X if x!=y]):
-            G2.add_edge(u,v)
+    for (u, v) in G.edges():
+        if (u not in X) and (v not in X):
+            G2.add_edge(u, v)
     return G2
 
 def attack_deletion(G,C,y):
