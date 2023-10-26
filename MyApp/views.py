@@ -216,7 +216,8 @@ def set_degrees(G, sem="cat", epsilon=0.0001):
 
 def v(alpha,G,k):
     M = np.transpose(np.array(nx.adjacency_matrix(G).todense()))
-    N = np.linalg.norm(M,np.inf)
+    inf_nom = np.linalg.norm(M,np.inf)
+    N = inf_nom if inf_nom != 0 else 1
     M2 = M/N
     M2k = np.linalg.matrix_power(M2,k)
     vM2k = np.sum(M2k,axis=1)*pow(alpha,k)*pow(-1,k)
