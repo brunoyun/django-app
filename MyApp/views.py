@@ -300,6 +300,7 @@ def convert_to_dot(G,index_dict):
 
 
 def impact_delobelle(G, sem, X, y, recompute=True):
+    N = None
     if recompute:
         _, N = set_degrees(G, sem)
 
