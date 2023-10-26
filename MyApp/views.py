@@ -166,15 +166,15 @@ def ASPTONETX(text):
 
     return G, parse_logs, index_dict,arg_dict,arguments,attacks
 
-def set_degrees(G, sem="cat", epsilon=0.0001):
-    list_nodes = list(G.nodes())
 
-    if(sem=="cs"):
-        current_degrees = counting(G, epsilon)
-    elif(sem in ["cat","max","card"]):
+def set_degrees(G, sem="cat", epsilon=0.0001, previous_N=None):
+    list_nodes = list(G.nodes())
+    N = None
+    if (sem == "cs"):
+        current_degrees, N = counting(G, epsilon, previous_N)
+    elif (sem in ["cat", "max", "card"]):
         num_nodes = G.number_of_nodes()
         current_degrees = np.array([1 for i in range(num_nodes)])
-
 
         error = 100
 
@@ -184,57 +184,52 @@ def set_degrees(G, sem="cat", epsilon=0.0001):
             for i in range(num_nodes):
                 att_i = [x for x in G.predecessors(list_nodes[i])]
 
-
-
                 if att_i == []:
-                    temp_degrees = np.append(temp_degrees,1)
+                    temp_degrees = np.append(temp_degrees, 1)
                 else:
-                    index_attackers = [np.where(np.array(list_nodes)==z)[0] for z in att_i]
+                    index_attackers = [np.where(np.array(list_nodes) == z)[0] for z in att_i]
                     att_i = reduce(np.union1d, index_attackers)
 
                     if sem == "cat":
-                        temp_degrees = np.append(temp_degrees,1 / (1 + sum([current_degrees[j] for j in att_i])))
+                        temp_degrees = np.append(temp_degrees, 1 / (1 + sum([current_degrees[j] for j in att_i])))
                     elif sem == "max":
-                        temp_degrees = np.append(temp_degrees,1 / (1 + max([current_degrees[j] for j in att_i])))
+                        temp_degrees = np.append(temp_degrees, 1 / (1 + max([current_degrees[j] for j in att_i])))
                     elif sem == "card":
-                        temp_degrees = np.append(temp_degrees,1 / (1 + len(att_i)+ sum([current_degrees[j] for j in att_i])/len(att_i)))
-
+                        temp_degrees = np.append(temp_degrees, 1 / (
+                                    1 + len(att_i) + sum([current_degrees[j] for j in att_i]) / len(att_i)))
 
             ## We calculate the error
             error = np.linalg.norm(temp_degrees - current_degrees)
 
             current_degrees = temp_degrees
 
+    nx.set_node_attributes(G, {list_nodes[i]: deg for (i, deg) in enumerate(current_degrees)}, name="degree")
+    return G, N
 
 
-    nx.set_node_attributes(G,{list_nodes[i]: deg for (i,deg) in enumerate(current_degrees)}, name="degree")
-    return G
-
-
-
-
-def v(alpha,G,k):
+def v(alpha,G,k, previous_N=None):
     M = np.transpose(np.array(nx.adjacency_matrix(G).todense()))
     inf_nom = np.linalg.norm(M,np.inf)
     N = inf_nom if inf_nom != 0 else 1
+    N = N if previous_N==None else previous_N
     M2 = M/N
     M2k = np.linalg.matrix_power(M2,k)
     vM2k = np.sum(M2k,axis=1)*pow(alpha,k)*pow(-1,k)
-    return vM2k
+    return vM2k,N
 
-def counting(G, epsilon=0.0001):
+def counting(G, epsilon=0.0001,previous_N=None):
     alpha=0.98
     k=1
-    current = v(alpha,G,0)
+    current,N = v(alpha,G,0,previous_N)
     finished=False
     while(not finished):
-        new = v(alpha,G,k)
+        new,_ = v(alpha,G,k,previous_N)
         error = np.linalg.norm(new)
         current += new
         k+=1
         if(error<epsilon):
             finished=True
-    return current
+    return current,N
 
 
 def copy_graph_without_X(G,X):
@@ -304,27 +299,25 @@ def convert_to_dot(G,index_dict):
     return result+"}"
 
 
-def impact_delobelle(G, sem, X,y, recompute=True):
-
+def impact_delobelle(G, sem, X, y, recompute=True):
     if recompute:
-        set_degrees(G, sem)
-
-
+        _, N = set_degrees(G, sem)
 
     if X != {}:
 
-        X2 = np.array(reduce(np.union1d, [[x for x in G.predecessors(i)] for i in X])).astype(int) #We get the attackers of X
-        X2 = X2[~np.isin(X2,list(X))] #we ignore those direct attackers in X (we only have the external attackers)
+        X2 = np.array(reduce(np.union1d, [[x for x in G.predecessors(i)] for i in X])).astype(
+            int)  # We get the attackers of X
+        X2 = X2[~np.isin(X2, list(X))]  # we ignore those direct attackers in X (we only have the external attackers)
         C = []
-        for (u,v) in G.edges():
+        for (u, v) in G.edges():
             if (u in X2) and (v in X):
-                C.append((u,v))
+                C.append((u, v))
 
-        G2 = attack_deletion(G,C,y) #We use the attack deletion method (new)
-        G1 = complement(G,X,y)
+        G2 = attack_deletion(G, C, y)  # We use the attack deletion method (new)
+        G1 = complement(G, X, y)
 
-        set_degrees(G2,sem)
-        set_degrees(G1,sem)
+        set_degrees(G2, sem, previous_N=N)
+        set_degrees(G1, sem, previous_N=N)
 
         return G2.nodes[y]["degree"] - G1.nodes[y]["degree"]
     else:
