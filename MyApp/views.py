@@ -70,14 +70,6 @@ def compute_impact(request):
             for (i,j) in G.edges():
                 G[i][j]["attack_intensity"] = jsonArrayExp2(retrieved_intensity, "source", index_dict[i],"target", index_dict[j],"contribution")
 
-            ##We create a hidden copy of G for counting semantics
-            for new_node in [str(g) + "_copy" for g in list(G.nodes())]:
-                G.add_node(new_node)
-            for (i, j) in list(G.edges()):
-                G.add_edges_from([(str(i) + "_copy", str(j) + "_copy")])
-
-
-
 
             if sem_impact == "delobelle":
                 impact = impact_delobelle(G,sem,{arg_dict[i] for i in X},arg_dict[x],recompute=False)
