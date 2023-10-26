@@ -72,7 +72,7 @@ def compute_impact(request):
 
 
             if sem_impact == "delobelle":
-                impact = impact_delobelle(G,sem,{arg_dict[i] for i in X},arg_dict[x],recompute=False)
+                impact = impact_delobelle(G,sem,{arg_dict[i] for i in X},arg_dict[x],recompute=True)
             else:
                 impact = impact_shapley(G,sem,{arg_dict[i] for i in X},arg_dict[x], recompute=False)
 
