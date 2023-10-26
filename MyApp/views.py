@@ -66,6 +66,12 @@ def compute_impact(request):
             retrieved_degree = json.loads(request.POST.get("hidden_degree"))
             retrieved_intensity = json.loads(request.POST.get("hidden_attacks").replace("'",'"'))
 
+            ##We create a hidden copy of G for counting semantics
+            for new_node in [str(g) + "_copy" for g in list(G.nodes())]:
+                G.add_node(new_node)
+            for (i, j) in list(G.edges()):
+                G.add_edges_from([(str(i) + "_copy", str(j) + "_copy")])
+
             for n in G.nodes():
                 G.nodes[n]["degree"] = jsonArrayExp1(retrieved_degree, "arg", index_dict[n],"degree")
 
