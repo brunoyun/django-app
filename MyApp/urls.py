@@ -9,3 +9,4 @@ urlpatterns = [
     path('compute_graph/', compute_graph, name='compute_graph'),
     path('compute_impact/', compute_impact, name='compute_impact'),
 ]
+

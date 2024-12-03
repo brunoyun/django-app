@@ -9,7 +9,10 @@ This repository provides the code to implement a django application that can tak
 
 ## Demo
 
-https://django-app-eta.vercel.app/
+A demo of the application is deployed on [Vercel](https://impact-gradual-semantics.vercel.app/).
+
+![image of the interface](https://bruno-yun.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F57e14b1b-ce77-483b-a9ed-537a76c86282%2F594f0392-5dbc-4463-bd53-419656ec7ed3%2FCapture_decran_2023-10-12_a_13.07.14.png?table=block&id=45d27bc7-5e0b-44a8-aa9c-716f5fb22af0&spaceId=57e14b1b-ce77-483b-a9ed-537a76c86282&width=1420&userId=&cache=v2)
+
 
 ## Gradual semantics implemented
 
