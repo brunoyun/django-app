@@ -45,3 +45,27 @@ We implemented the following two semantics:
 
 - Shapley-based semantics
 - Delobelle and Villata's semantics
+
+## Citation
+
+If you use this work in your research, please cite the following paper:
+
+```BIBTEX
+@article{DBLP:journals/corr/abs-2407-08302,
+  author       = {Caren Al Anaissy and
+                  J{\'{e}}r{\^{o}}me Delobelle and
+                  Srdjan Vesic and
+                  Bruno Yun},
+  title        = {Impact Measures for Gradual Argumentation Semantics},
+  journal      = {CoRR},
+  volume       = {abs/2407.08302},
+  year         = {2024},
+  url          = {https://doi.org/10.48550/arXiv.2407.08302},
+  doi          = {10.48550/ARXIV.2407.08302},
+  eprinttype    = {arXiv},
+  eprint       = {2407.08302},
+  timestamp    = {Fri, 16 Aug 2024 14:50:28 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2407-08302.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```
