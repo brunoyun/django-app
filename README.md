@@ -1,6 +1,6 @@
 # Impact for Gradual semantics
 
-This repository provides the code to implement a django application that can take as input an argumentation graph (in ASPARTIX) format and:
+This repository provides the code to implement a Django application that can take as input an argumentation graph (in ASPARTIX) format and:
 
 1. Draw the graph 
 2. Compute the degrees of the arguments (using a specific semantics, see below)
@@ -19,6 +19,18 @@ att(a,b). ... a attacks b
 The code above creates a simple graph with two arguments ($a$ and $b$) with one attack from $a$ to $b$.
 
 For a full description, we refer to the corresponding [TU WIEN webpage](https://www.dbai.tuwien.ac.at/proj/argumentation/systempage/dung.html).
+
+## The ASPARTIX format
+
+The ASPARTIX format is used to define Dung argumentation graphs.
+
+```
+arg(a).   ... a is an argument
+arg(a).   ... b is an argument
+att(a,b). ... a attacks b
+```
+
+The code above creates a simple graph with two arguments (a and b)
 
 ## Demo
 

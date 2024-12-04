@@ -291,7 +291,7 @@ def convert_to_dot(G,index_dict):
 
     if(not (len(G.nodes)==0)):
         for a in G.nodes:
-            print(a)
+            #print(a)
             result+= str(a)+" [label=\""+str(index_dict[a])+" "+str(round(G.nodes[a]["degree"],3))+"\"];"
         for (i,j) in G.edges:
             result+= str(i)+" -> "+str(j)+" [label="+str(round(G[i][j]["attack_intensity"],3))+"];"
@@ -367,8 +367,10 @@ def impact_shapley(G, sem, X,y, recompute=True):
     result_impact=0
 
     for x in X:
-        for i in range(1,20*n+1):
+        for i in range(1,20):
+            print("finding paths for", i)
             P = find_path_from_to(G,x,y,i)
+            print("done finding paths")
             total_paths_size_i = 0
             for p in P:
                 path_value = 1
