@@ -20,18 +20,6 @@ The code above creates a simple graph with two arguments ($a$ and $b$) with one 
 
 For a full description, we refer to the corresponding [TU WIEN webpage](https://www.dbai.tuwien.ac.at/proj/argumentation/systempage/dung.html).
 
-## The ASPARTIX format
-
-The ASPARTIX format is used to define Dung argumentation graphs.
-
-```
-arg(a).   ... a is an argument
-arg(a).   ... b is an argument
-att(a,b). ... a attacks b
-```
-
-The code above creates a simple graph with two arguments (a and b)
-
 ## Demo
 
 A demo of the application is deployed on [Vercel](https://impact-gradual-semantics.vercel.app/).
